@@ -12,7 +12,6 @@
 // * One matcher for the macro is provided & can be used as a guide.
 // * Run `cargo test --bin m4` to check your work.
 
-#[rustfmt::skip]
 macro_rules! get {
     // first item from iterable
     (first item from $iterable:expr) => {
