@@ -1,15 +1,15 @@
 // Topic: Macro practice
 //
 // Summary:
-//   Create a macro that times how long a function takes to execute.
+//   Create a macro that measures how long a function takes to execute.
 //
 // Requirements:
 // * Write a single macro that executes a function:
 //   * Prior to executing the function, print out "Call: ", followed
 //     by the function name
-//   * Time how long the function takes to executes
+//   * Measure how long the function takes to executes
 //   * Print out (in nanoseconds) how long the function takes to execute
-// * Time each sample function with the macro
+// * Measure each sample function with the macro
 //
 // Notes:
 // * `std::time::Instant` can be used to calculate elapsed time
