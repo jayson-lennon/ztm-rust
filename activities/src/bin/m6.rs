@@ -1,27 +1,25 @@
 // Topic: Macro practice
 //
 // Summary:
-//   Create a macro that can log when a closure is called, and how long
-//   it takes to execute.
+//   Create a macro that times how long a function takes to execute.
 //
 // Requirements:
-// * Write a single macro that executes a closure:
-//   * Prior to executing the closure, print out "Call: ", followed
-//     by the closure name
-//   * Track how long the closure takes to executes
-//   * Print out the time taken in nanoseconds once execution completes
-// * Call each sample function by wrapping each in a closure and
-//   invoking the macro
+// * Write a single macro that executes a function:
+//   * Prior to executing the function, print out "Call: ", followed
+//     by the function name
+//   * Time how long the function takes to executes
+//   * Print out (in nanoseconds) how long the function takes to execute
+// * Time each sample function with the macro
 //
 // Notes:
-// * Use `std::time::Instant` to calculate how long the closure takes to execute
-// * Use `stringify!` to get a string representation of the closure name
+// * `std::time::Instant` can be used to calculate elapsed time
+// * Use `stringify!` to get a string representation of the function name
 
 macro_rules! fnlog {
-    ($fn:expr) => {
+    ($fn:ident $($args:tt)*) => {
         println!("Call: {}", stringify!($fn));
         let now = ::std::time::Instant::now();
-        $fn();
+        $fn$($args)*;
         let elapsed = now.elapsed().as_nanos();
         println!("Elapsed: {}ns", elapsed);
     };
@@ -44,7 +42,7 @@ fn sample_fn_3(lhs: usize, rhs: usize) -> usize {
 }
 
 fn main() {
-    fnlog!(|| sample_fn_1());
-    fnlog!(|| sample_fn_2(1));
-    fnlog!(|| sample_fn_3(2, 2));
+    fnlog!(sample_fn_1());
+    fnlog!(sample_fn_2(1));
+    fnlog!(sample_fn_3(2, 2));
 }
