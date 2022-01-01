@@ -7,23 +7,23 @@
 
 macro_rules! hashmap {
     (
-        $($key:tt : $value:tt),+
+        $($key:expr => $value:expr),+
         $(,)?
     ) => {{
-        use std::collections::HashMap;
-        let mut map = HashMap::new();
+        use ::std::collections::HashMap;
+        let mut hashmap = HashMap::new();
         $(
-            map.insert($key, $value);
+            hashmap.insert($key, $value);
         )+
-        map
+        hashmap
     }};
 }
 
 fn main() {
     let hashmap = hashmap!(
-        "aaa": "111",
-        "bbb": "222",
-        "ccc": "333",
+        1: "a".to_owned(),
+        2: "b".to_owned(),
+        3: "c".to_owned(),
     );
     dbg!(hashmap);
 }
