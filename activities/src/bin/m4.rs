@@ -15,12 +15,12 @@
 macro_rules! get {
     // first item from iterable
     (first item from $iterable:expr) => {
-        $iterable.iter().take(1).nth(0)
+        $iterable.iter().nth(0)
     };
     // last item from iterable
     (last item from $iterable:expr) => {{
         let len = $iterable.len();
-        $iterable.iter().skip(len - 1).take(1).nth(0)
+        $iterable.iter().skip(len - 1).nth(0)
     }};
     // first k items from iterable
     (first $count:literal items from $iterable:expr) => {
