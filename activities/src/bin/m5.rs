@@ -41,7 +41,8 @@ mod test {
     macro_rules! multi_test {
         (
             $fn:ident:
-            $( $name:ident -> $values:expr )+
+            $( $name:ident -> $values:expr ),+
+            $(,)?
         ) => {
             $(
                 #[test]
