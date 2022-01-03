@@ -42,14 +42,13 @@ impl<'a> Configuration<'a> {
     }
 }
 
-macro_rules! test {
+macro_rules! mkconfig {
     (
         $config:ident:
         $(
             [$section:ident]
             $(
-                $key:ident = $($value:expr)+
-                $(;)*
+                $key:ident = $value:expr;
             )+
         )+
     ) => {
@@ -70,32 +69,30 @@ macro_rules! test {
                     )+
                 }
                 $(
-                    $(
-                        $config.insert(stringify!($section), stringify!($key), format!("{}", $value));
-                    )+
+                    $config.insert(stringify!($section), stringify!($key), format!("{}", $value));
                 )+
             }
         )+
     };
 }
 
-fn ans(lhs: usize, rhs: usize) -> usize {
+fn add(lhs: usize, rhs: usize) -> usize {
     lhs + rhs
 }
 
 fn main() {
     let mut config = Configuration::new();
-    test!(config:
+    mkconfig!(config:
         [sample]
-        sum = ans(2, 2);
+        sum = add(2, 2);
         farewell="goodbye";
-        abc = "xyz";
-        [other]
+        one = 1;
+        [section_2]
         hello="hi!";
     );
 
     dbg!(&config);
 
-    let other_section = config.get_section(section::other);
-    dbg!(other_section);
+    let section_2 = config.get_section(section::section_2);
+    dbg!(section_2);
 }
