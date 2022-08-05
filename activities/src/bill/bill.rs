@@ -9,12 +9,13 @@ enum BillStatus {
 #[derive(Debug, Clone)]
 pub struct Bill {
     amount: i32,
-    status: BillStatus,
+    id: i32,
     name: String,
+    status: BillStatus,
 }
 
 impl Bill {
-    pub fn new() -> Self {
+    pub fn new(id: i32) -> Self {
         use crate::bill::input::capture_input;
 
         let name: String = capture_input("Enter Name:");
@@ -24,6 +25,7 @@ impl Bill {
 
         return Bill {
             amount: amount.parse::<i32>().unwrap(),
+            id,
             name: name.to_owned(),
             status: match status.to_lowercase().as_str() {
                 "paid" => BillStatus::Paid,

@@ -32,8 +32,9 @@
 use activity::bill::bill::Bill;
 use activity::bill::input::capture_input;
 use activity::bill::utils::divider;
+use std::collections::HashMap;
 
-fn choice_one(bills: &Vec<Bill>) {
+fn choice_one(bills: &HashMap<i32, Bill>) {
     divider(None, None);
     println!("Viewing bills");
 
@@ -46,18 +47,19 @@ fn choice_one(bills: &Vec<Bill>) {
     }
 }
 
-fn choice_two(mut bills: Vec<Bill>) -> Vec<Bill> {
+fn choice_two(mut bills: HashMap<i32, Bill>) -> HashMap<i32, Bill> {
     divider(None, None);
     println!("Creating a new bill");
 
-    let bill = Bill::new();
-    bills.push(bill);
+    let id = bills.len() as i32;
+    let bill = Bill::new(id);
+    bills.insert(id, bill);
 
     return bills;
 }
 
 fn main() {
-    let mut bills: Vec<Bill> = Vec::new();
+    let mut bills: HashMap<i32, Bill> = HashMap::new();
 
     println!("MENU CLI");
     divider(None, None);
