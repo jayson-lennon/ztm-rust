@@ -30,10 +30,11 @@
 //   hashmap will be easier to work with at stages 2 and 3.
 
 use activity::bill::bill::Bill;
+use activity::bill::utils::divider;
 use activity::bill::*;
 
 fn choice_one(bills: &Vec<Bill>) {
-    println!("=====");
+    divider(None, None);
     println!("Viewing bills");
 
     if bills.len() == 0 {
@@ -46,7 +47,7 @@ fn choice_one(bills: &Vec<Bill>) {
 }
 
 fn choice_two(mut bills: Vec<Bill>) -> Vec<Bill> {
-    println!("=====");
+    divider(None, None);
     println!("Creating a new bill");
 
     let bill = Bill::new();
@@ -64,12 +65,12 @@ fn main() {
     let mut bills: Vec<Bill> = Vec::new();
 
     println!("MENU CLI");
-    println!("=====");
+    divider(None, None);
     loop {
         for line in vec!["1: View bills", "2: Create bill", "q: quit"] {
             println!("{:?}", line)
         }
-        println!("=====");
+        divider(None, None);
 
         let choice: String = input::capture_input("Make a choice: (1/2/q)");
 
@@ -83,7 +84,7 @@ fn main() {
             _ => println!("invalid choice, try again"),
         }
 
-        println!("=====");
+        divider(None, None);
     }
 
     println!("done");
