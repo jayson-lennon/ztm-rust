@@ -29,4 +29,62 @@
 // * A vector is the easiest way to store the bills at stage 1, but a
 //   hashmap will be easier to work with at stages 2 and 3.
 
-fn main() {}
+use activity::bill::bill::Bill;
+use activity::bill::*;
+
+fn choice_one(bills: &Vec<Bill>) {
+    println!("=====");
+    println!("Viewing bills");
+
+    if bills.len() == 0 {
+        println!("0 bills")
+    }
+
+    for bill in bills {
+        println!("{:?}", bill)
+    }
+}
+
+fn choice_two(mut bills: Vec<Bill>) -> Vec<Bill> {
+    println!("=====");
+    println!("Creating a new bill");
+
+    let bill = Bill::new();
+    bills.push(bill);
+
+    return bills;
+}
+
+fn main() {
+    // use activity::bill::bill::Bill;
+    // let bill = Bill::new();
+    //
+    // println!("{:?}", bill)
+
+    let mut bills: Vec<Bill> = Vec::new();
+
+    println!("MENU CLI");
+    println!("=====");
+    loop {
+        for line in vec!["1: View bills", "2: Create bill", "q: quit"] {
+            println!("{:?}", line)
+        }
+        println!("=====");
+
+        let choice: String = input::capture_input("Make a choice: (1/2/q)");
+
+        match choice.as_str() {
+            "1" => choice_one(&bills),
+            "2" => {
+                let new_bills = choice_two(bills.clone());
+                bills = new_bills
+            }
+            "q" => break,
+            _ => println!("invalid choice, try again"),
+        }
+
+        println!("=====");
+    }
+
+    println!("done");
+}
