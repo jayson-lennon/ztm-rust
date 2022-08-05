@@ -37,6 +37,7 @@ use std::collections::HashMap;
 fn choice_one(bills: &HashMap<i32, Bill>) {
     divider(None, None);
     println!("Viewing bills");
+    println!();
 
     if bills.len() == 0 {
         println!("0 bills")
@@ -50,27 +51,48 @@ fn choice_one(bills: &HashMap<i32, Bill>) {
 fn choice_two(mut bills: HashMap<i32, Bill>) -> HashMap<i32, Bill> {
     divider(None, None);
     println!("Creating a new bill");
+    println!();
 
-    let id = bills.len() as i32;
-    let bill = Bill::new(id);
-    bills.insert(id, bill);
+    let bill = Bill::new();
+    bills.insert(bill.id, bill);
 
     return bills;
 }
 
-fn main() {
+fn choice_three(mut bills: HashMap<i32, Bill>) -> HashMap<i32, Bill> {
+    divider(None, None);
+    println!("Deleting existing bill");
+    println!();
+
+    if bills.len() == 0 {
+        println!("0 bills");
+        return bills;
+    }
+
+    let id = capture_input("Bill id:").parse::<i32>().unwrap();
+    bills.remove(&id);
+
+    return bills;
+}
+
+fn cli() {
     let mut bills: HashMap<i32, Bill> = HashMap::new();
 
-    println!("MENU CLI");
-    divider(None, None);
     loop {
-        for line in vec!["1: View bills", "2: Create bill", "q: quit"] {
+        divider(None, None);
+
+        for line in vec![
+            "1: View bills",
+            "2: Create bill",
+            "3: Delete bill",
+            "q: quit",
+        ] {
             println!("{:?}", line)
         }
 
         divider(None, None);
 
-        let choice: String = capture_input("Make a choice: (1/2/q)");
+        let choice: String = capture_input("Make a choice: (1/2/3/q)");
 
         match choice.as_str() {
             "1" => choice_one(&bills),
@@ -78,13 +100,22 @@ fn main() {
                 let new_bills = choice_two(bills.clone());
                 bills = new_bills
             }
+            "3" => {
+                let new_bills = choice_three(bills.clone());
+                bills = new_bills
+            }
             "q" => break,
-            _ => println!("invalid choice, try again"),
+            _ => println!("Invalid choice, try again"),
         }
-
-        divider(None, None);
     }
+}
 
+fn main() {
+    println!("MENU CLI");
+
+    cli();
+
+    divider(None, None);
     println!("Done");
     divider(None, None);
 }
