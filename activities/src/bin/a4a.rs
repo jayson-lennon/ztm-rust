@@ -7,4 +7,13 @@
 // * Use a variable set to either true or false
 // * Use a match expression to determine which message to display
 
-fn main() {}
+fn display(val: bool) -> &'static str {
+    return match val {
+        true => "it's true",
+        false => "it's false"
+    }
+}
+fn main() {
+    println!("{:?}", display(true));
+    println!("{:?}", display(false))
+}

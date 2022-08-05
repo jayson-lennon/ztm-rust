@@ -25,4 +25,20 @@ fn find_user(name: &str) -> Option<i32> {
     }
 }
 
-fn main() {}
+fn print_user(name: &str) {
+    match find_user(name).map(|user_id| User {
+        user_id,
+        name: name.to_owned(),
+    }) {
+        Some(user) => println!("{:?}", user),
+        None => println!("not found"),
+    }
+}
+
+fn main() {
+    let user_names = vec!["sam", "matt", "kattie", "r1oga"];
+
+    for user_name in user_names {
+        print_user(user_name)
+    }
+}

@@ -10,4 +10,37 @@
 // * Implement functionality on the box struct to create a new box
 // * Implement functionality on the box struct to print the characteristics
 
-fn main() {}
+enum Color {
+    Red,
+    Blue,
+    Orange,
+}
+
+struct Box {
+    color: Color,
+    dimensions: (i32, i32),
+    weight: i32,
+}
+
+impl Box {
+    fn create(color: Color, dimensions: (i32, i32), weight: i32) -> Self {
+        Self {
+            color,
+            dimensions,
+            weight,
+        }
+    }
+
+    fn print(&self) {
+        println!("{:?} {:?} {:?}", match self.color {
+            Color::Blue => "blue",
+            Color::Red => "red",
+            Color::Orange => "orange"
+        }, self.dimensions, self.weight)
+    }
+}
+
+fn main() {
+    let my_box = Box::create(Color::Orange, (6,9), 32);
+    my_box.print()
+}

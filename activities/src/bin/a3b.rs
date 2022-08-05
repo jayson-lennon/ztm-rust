@@ -9,4 +9,18 @@
 // * Use an if..else if..else block to determine which message to display
 // * Use the println macro to display messages to the terminal
 
-fn main() {}
+fn display(val: i32) -> &'static str {
+    return if val > 5 {
+        ">5"
+    } else if val < 5 {
+        "< 5"
+    } else {
+        "=5"
+    }
+}
+
+fn main() {
+    println!("{:?}", display(6));
+    println!("{:?}", display(4));
+    println!("{:?}", display(5))
+}
