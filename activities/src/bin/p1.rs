@@ -96,6 +96,7 @@ fn choice_four(mut bills: HashMap<i32, Bill>) -> HashMap<i32, Bill> {
 
 fn cli() {
     let mut bills: HashMap<i32, Bill> = HashMap::new();
+    let mut prev_bills: HashMap<i32, Bill> = HashMap::new();
 
     loop {
         divider(None, None);
@@ -106,27 +107,36 @@ fn cli() {
             "3: Delete bill",
             "4: Edit bill",
             "q: quit",
+            "x: cancel previous",
         ] {
             println!("{:?}", line)
         }
 
         divider(None, None);
 
-        let choice: String = capture_input("Make a choice: (1/2/3/4/q)");
+        let choice: String = capture_input("Make a choice: (1/2/3/4/q/x)");
 
         match choice.as_str() {
             "1" => choice_one(&bills),
             "2" => {
                 let new_bills = choice_two(bills.clone());
+                prev_bills = bills;
                 bills = new_bills
             }
             "3" => {
                 let new_bills = choice_three(bills.clone());
-                bills = new_bills
+                prev_bills = bills;
+                bills = new_bills;
             }
             "4" => {
                 let new_bills = choice_four(bills.clone());
+                prev_bills = bills;
                 bills = new_bills
+            }
+            "x" => {
+                divider(None, None);
+                println!("Cancelling previous action");
+                bills = prev_bills.clone();
             }
             "q" => break,
             _ => println!("Invalid choice, try again"),
