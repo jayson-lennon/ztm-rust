@@ -75,6 +75,25 @@ fn choice_three(mut bills: HashMap<i32, Bill>) -> HashMap<i32, Bill> {
     return bills;
 }
 
+fn choice_four(mut bills: HashMap<i32, Bill>) -> HashMap<i32, Bill> {
+    divider(None, None);
+    println!("Editing existing bill");
+    println!();
+
+    if bills.len() == 0 {
+        println!("0 bills");
+        return bills;
+    }
+
+    let id = capture_input("Bill id:").parse::<i32>().unwrap();
+    println!("New bill attributes:");
+    if let Some(bill) = bills.get_mut(&id) {
+        *bill = Bill::new();
+    }
+
+    return bills;
+}
+
 fn cli() {
     let mut bills: HashMap<i32, Bill> = HashMap::new();
 
@@ -85,6 +104,7 @@ fn cli() {
             "1: View bills",
             "2: Create bill",
             "3: Delete bill",
+            "4: Edit bill",
             "q: quit",
         ] {
             println!("{:?}", line)
@@ -92,7 +112,7 @@ fn cli() {
 
         divider(None, None);
 
-        let choice: String = capture_input("Make a choice: (1/2/3/q)");
+        let choice: String = capture_input("Make a choice: (1/2/3/4/q)");
 
         match choice.as_str() {
             "1" => choice_one(&bills),
@@ -102,6 +122,10 @@ fn cli() {
             }
             "3" => {
                 let new_bills = choice_three(bills.clone());
+                bills = new_bills
+            }
+            "4" => {
+                let new_bills = choice_four(bills.clone());
                 bills = new_bills
             }
             "q" => break,
