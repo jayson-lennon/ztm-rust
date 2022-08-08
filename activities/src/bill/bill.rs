@@ -1,4 +1,4 @@
-use crate::bill::input::capture_input;
+use crate::bill::input::{capture_amount, capture_input};
 use std::collections::HashMap;
 
 #[derive(Debug, Clone)]
@@ -19,17 +19,14 @@ pub struct Bill {
 
 impl Bill {
     pub fn new(id: &i32) -> Result<Self, ()> {
-        use crate::bill::input::capture_input;
-
-        let name = capture_input("Enter Name:").ok_or("");
-        let status = capture_input("Enter Status:").ok_or("");
-
-        let amount = capture_input("Enter Amount:").ok_or("");
+        let name = capture_input("Enter Name:").ok_or("").unwrap();
+        let status = capture_input("Enter Status:").ok_or("").unwrap();
+        let amount = capture_amount()?;
 
         let mut bill = Bill {
-            amount: amount.unwrap().parse::<i32>().unwrap(),
-            name: name.unwrap(),
-            status: match status.unwrap().to_lowercase().as_str() {
+            amount,
+            name,
+            status: match status.to_lowercase().as_str() {
                 "paid" => BillStatus::Paid,
                 "unpaid" => BillStatus::Unpaid,
                 "overdue" => BillStatus::Overdue,
@@ -49,6 +46,7 @@ impl Bill {
 #[derive(Clone, Debug)]
 pub struct Bills {
     inner: HashMap<i32, Bill>,
+    previous: HashMap<i32, Bill>,
     counter: i32,
 }
 
@@ -56,11 +54,13 @@ impl Bills {
     pub fn new() -> Self {
         Self {
             inner: HashMap::new(),
+            previous: HashMap::new(),
             counter: 0,
         }
     }
 
     pub fn add(&mut self) {
+        self.previous = self.inner.clone();
         self.counter += 1;
         let bill = Bill::new(&self.counter).unwrap();
         self.inner.insert(self.counter, bill);
@@ -69,7 +69,10 @@ impl Bills {
     pub fn remove(&mut self) {
         if self.inner.len() == 0 {
             println!("0 bills");
+            return;
         }
+
+        self.previous = self.inner.clone();
 
         let id = capture_input("Bill id:").unwrap().parse::<i32>().unwrap();
         self.inner.remove(&id);
@@ -78,7 +81,10 @@ impl Bills {
     pub fn edit(&mut self) {
         if self.inner.len() == 0 {
             println!("0 bills");
+            return;
         }
+
+        self.previous = self.inner.clone();
 
         let id = capture_input("Bill id:").unwrap().parse::<i32>().unwrap();
         println!("New bill attributes:");
@@ -89,11 +95,16 @@ impl Bills {
 
     pub fn view(&self) {
         if self.inner.len() == 0 {
-            println!("0 bills")
+            println!("0 bills");
+            return;
         }
 
         for bill in self.inner.values() {
             bill.print()
         }
+    }
+
+    pub fn reset(&mut self) {
+        self.inner = self.previous.clone();
     }
 }

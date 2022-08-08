@@ -75,7 +75,6 @@ pub fn cli() {
                 bills.remove();
             }
             Some(EditBill) => {
-                prev_bills = bills.clone();
                 println!("Editing existing bill");
                 println!();
 
@@ -83,7 +82,7 @@ pub fn cli() {
             }
             Some(CancelPrevious) => {
                 println!("Cancelling previous action");
-                bills = prev_bills.clone();
+                bills.reset();
             }
             Some(Quit) => break,
             None => println!("Invalid choice, try again"),
