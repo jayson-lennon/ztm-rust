@@ -75,7 +75,11 @@ impl Bills {
         self.previous = self.inner.clone();
 
         let id = capture_input("Bill id:").unwrap().parse::<i32>().unwrap();
-        self.inner.remove(&id);
+
+        match self.inner.remove(&id).is_some() {
+            true => println!("Bill removed"),
+            false => println!("Bill not found"),
+        }
     }
 
     pub fn edit(&mut self) {
@@ -87,9 +91,13 @@ impl Bills {
         self.previous = self.inner.clone();
 
         let id = capture_input("Bill id:").unwrap().parse::<i32>().unwrap();
-        println!("New bill attributes:");
-        if let Some(bill) = self.inner.get_mut(&id) {
-            *bill = Bill::new(&id).unwrap();
+        match self.inner.get_mut(&id) {
+            Some(bill) => {
+                println!("New bill attributes:");
+                *bill = Bill::new(&id).unwrap();
+                println!("Bill updated")
+            }
+            None => println!("Bill not found"),
         }
     }
 
