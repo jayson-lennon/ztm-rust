@@ -70,7 +70,7 @@ impl Bills {
 
     /// Removes an existing bill. Returns false if the bill does not exist.
     fn remove(&mut self, name: &str) -> bool {
-        // Chaning the is_some() function call will allow us to return
+        // Chaining the is_some() function call will allow us to return
         // whether an item was removed or not.
         self.inner.remove(name).is_some()
     }
