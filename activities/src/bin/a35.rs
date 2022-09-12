@@ -62,7 +62,10 @@ fn print_tile(tile: Tile) {
         }
         Brick(other) => println!("{:?} brick", other),
         Dirt | Grass | Sand => println!("Ground tile"),
-        Treasure(TreasureChest { amount, .. }) if amount >= 100 => println!("Lots of gold!"),
+        Treasure(TreasureChest {
+            amount,
+            content: TreasureItem::Gold,
+        }) if amount >= 100 => println!("Lots of gold!"),
         Water(pressure) if pressure.0 < 10 => println!("Water pressure level: {}", pressure.0),
         Water(pressure) if pressure.0 >= 10 => println!("High water pressure!"),
         _ => (),
