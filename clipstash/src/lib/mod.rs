@@ -5,18 +5,18 @@ pub mod domain;
 pub mod service;
 pub mod web;
 
+pub use data::DataError;
 pub use domain::clip::field::ShortCode;
 pub use domain::clip::{Clip, ClipError};
 pub use domain::time::Time;
-pub use data::DataError;
 pub use service::ServiceError;
 
 use data::AppDatabase;
+use domain::maintenance::Maintenance;
 use rocket::fs::FileServer;
 use rocket::{Build, Rocket};
-use web::{renderer::Renderer};
 use web::hitcounter::HitCounter;
-use domain::maintenance::Maintenance;
+use web::renderer::Renderer;
 
 /// Creates a new Rocket build that is configured for running ClipStash.
 pub fn rocket(config: RocketConfig) -> Rocket<Build> {
@@ -40,10 +40,15 @@ pub struct RocketConfig {
     pub maintenance: Maintenance,
 }
 
-
 #[cfg(test)]
 pub mod test {
     pub fn async_runtime() -> tokio::runtime::Runtime {
-        tokio::runtime::Runtime::new().expect("failed to spawn tokio runtime")
+        tokio::runtime::Builder::new_multi_thread()
+            .worker_threads(1)
+            .max_blocking_threads(1)
+            .enable_time()
+            .build()
+            .expect("failed to spawn tokio runtime")
     }
 }
+
