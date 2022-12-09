@@ -3,19 +3,21 @@
 use crate::data::AppDatabase;
 use crate::service;
 use crate::service::action;
-use crate::web::{ctx, form, renderer::Renderer, PageError, PASSWORD_COOKIE, hitcounter::HitCounter};
+use crate::web::{
+    ctx, form, hitcounter::HitCounter, renderer::Renderer, PageError, PASSWORD_COOKIE,
+};
 use crate::{ServiceError, ShortCode};
 use rocket::form::{Contextual, Form};
 use rocket::http::{Cookie, CookieJar, Status};
-use rocket::response::content::Html;
+use rocket::response::content::RawHtml;
 use rocket::response::{status, Redirect};
 use rocket::{uri, State};
 
 /// Route to the home page.
 #[rocket::get("/")]
-fn home(renderer: &State<Renderer<'_>>) -> Html<String> {
+fn home(renderer: &State<Renderer<'_>>) -> RawHtml<String> {
     let context = ctx::Home::default();
-    Html(renderer.render(context, &[]))
+    RawHtml(renderer.render(context, &[]))
 }
 
 /// Route to submit a new [`Clip`](crate::Clip).
@@ -24,7 +26,7 @@ pub async fn new_clip(
     form: Form<Contextual<'_, form::NewClip>>,
     database: &State<AppDatabase>,
     renderer: &State<Renderer<'_>>,
-) -> Result<Redirect, (Status, Html<String>)> {
+) -> Result<Redirect, (Status, RawHtml<String>)> {
     let form = form.into_inner();
     if let Some(value) = form.value {
         let req = service::ask::NewClip {
@@ -39,7 +41,7 @@ pub async fn new_clip(
                 eprintln!("internal error: {}", e);
                 Err((
                     Status::InternalServerError,
-                    Html(renderer.render(
+                    RawHtml(renderer.render(
                         ctx::Home::default(),
                         &["A server error occurred. Please try again"],
                     )),
@@ -62,13 +64,11 @@ pub async fn new_clip(
             .collect::<Vec<_>>();
         Err((
             Status::BadRequest,
-            Html(
-                renderer.render_with_data(
-                    ctx::Home::default(),
-                    ("clip", &form.context),
-                    &errors
-                )
-            ),
+            RawHtml(renderer.render_with_data(
+                ctx::Home::default(),
+                ("clip", &form.context),
+                &errors,
+            )),
         ))
     }
 }
@@ -80,13 +80,16 @@ pub async fn get_clip(
     database: &State<AppDatabase>,
     hit_counter: &State<HitCounter>,
     renderer: &State<Renderer<'_>>,
-) -> Result<status::Custom<Html<String>>, PageError> {
+) -> Result<status::Custom<RawHtml<String>>, PageError> {
     fn render_with_status<T: ctx::PageContext + serde::Serialize + std::fmt::Debug>(
         status: Status,
         context: T,
-        renderer: &Renderer
-    ) -> Result<status::Custom<Html<String>>, PageError> {
-        Ok(status::Custom(status, Html(renderer.render(context, &[]))))
+        renderer: &Renderer,
+    ) -> Result<status::Custom<RawHtml<String>>, PageError> {
+        Ok(status::Custom(
+            status,
+            RawHtml(renderer.render(context, &[])),
+        ))
     }
     match action::get_clip(shortcode.clone().into(), database.get_pool()).await {
         Ok(clip) => {
@@ -101,7 +104,7 @@ pub async fn get_clip(
             }
             ServiceError::NotFound => Err(PageError::NotFound("Clip not found".to_owned())),
             _ => Err(PageError::Internal("server error".to_owned())),
-        }
+        },
     }
 }
 
@@ -114,7 +117,7 @@ pub async fn submit_clip_password(
     hit_counter: &State<HitCounter>,
     database: &State<AppDatabase>,
     renderer: &State<Renderer<'_>>,
-) -> Result<Html<String>, PageError> {
+) -> Result<RawHtml<String>, PageError> {
     if let Some(form) = &form.value {
         let req = service::ask::GetClip {
             shortcode: shortcode.clone(),
@@ -128,20 +131,20 @@ pub async fn submit_clip_password(
                     PASSWORD_COOKIE,
                     form.password.clone().into_inner().unwrap_or_default(),
                 ));
-                Ok(Html(renderer.render(context, &[])))
+                Ok(RawHtml(renderer.render(context, &[])))
             }
             Err(e) => match e {
                 ServiceError::PermissionError(e) => {
                     let context = ctx::PasswordRequired::new(shortcode);
-                    Ok(Html(renderer.render(context, &[e.as_str()])))
+                    Ok(RawHtml(renderer.render(context, &[e.as_str()])))
                 }
                 ServiceError::NotFound => Err(PageError::NotFound("Clip not found".to_owned())),
                 _ => Err(PageError::Internal("server error".to_owned())),
-            }
+            },
         }
     } else {
         let context = ctx::PasswordRequired::new(shortcode);
-        Ok(Html(renderer.render(
+        Ok(RawHtml(renderer.render(
             context,
             &["A password is required to view this clip"],
         )))
@@ -154,7 +157,7 @@ pub async fn get_raw_clip(
     cookies: &CookieJar<'_>,
     shortcode: ShortCode,
     hit_counter: &State<HitCounter>,
-    database: &State<AppDatabase>
+    database: &State<AppDatabase>,
 ) -> Result<status::Custom<String>, Status> {
     use crate::domain::clip::field::Password;
     let req = service::ask::GetClip {
@@ -174,8 +177,8 @@ pub async fn get_raw_clip(
         Err(e) => match e {
             ServiceError::PermissionError(msg) => Ok(status::Custom(Status::Unauthorized, msg)),
             ServiceError::NotFound => Err(Status::NotFound),
-            _ => Err(Status::InternalServerError)
-        }
+            _ => Err(Status::InternalServerError),
+        },
     }
 }
 
@@ -217,21 +220,21 @@ pub mod catcher {
 
 #[cfg(test)]
 pub mod test {
-    use crate::data::AppDatabase;
-    use crate::test::async_runtime;
-    use crate::web::test::client;
+    use crate::{data::AppDatabase, web::test::init_test_client};
     use rocket::http::Status;
 
     #[test]
     fn gets_home() {
-        let client = client();
+        let (_, client) = init_test_client();
+
         let response = client.get("/").dispatch();
         assert_eq!(response.status(), Status::Ok);
     }
 
     #[test]
     fn error_on_missing_clip() {
-        let client = client();
+        let (_, client) = init_test_client();
+
         let response = client.get("/clip/aasldfjkasldgkj").dispatch();
         assert_eq!(response.status(), Status::NotFound);
     }
@@ -242,9 +245,8 @@ pub mod test {
         use crate::service;
         use rocket::http::{ContentType, Cookie};
 
-        let rt = async_runtime();
+        let (rt, client) = init_test_client();
 
-        let client = client();
         let db = client.rocket().state::<AppDatabase>().unwrap();
 
         let req = service::ask::NewClip {
@@ -288,5 +290,5 @@ pub mod test {
             .dispatch();
         assert_eq!(response.status(), Status::Unauthorized);
     }
-
 }
+

@@ -4,16 +4,16 @@ pub mod query;
 
 use derive_more::{Display, From};
 use serde::{Deserialize, Serialize};
-use uuid::Uuid;
-use std::str::FromStr;
 use sqlx::Sqlite;
+use std::str::FromStr;
+use uuid::Uuid;
 
 /// The possible errors that may occur when working with a database.
 #[derive(Debug, thiserror::Error)]
 pub enum DataError {
     /// Database error.
     #[error("database error: {0}")]
-    Database(#[from] sqlx::Error)
+    Database(#[from] sqlx::Error),
 }
 
 /// Concrete database pool wrapper.
@@ -41,7 +41,9 @@ impl Database<Sqlite> {
             Ok(pool) => Self(pool),
             Err(e) => {
                 eprintln!("{}\n", e);
-                eprintln!("If the database has not yet been created, run: \n   $ sqlx database setup\n");
+                eprintln!(
+                    "If the database has not yet been created, run: \n   $ sqlx database setup\n"
+                );
                 panic!("database connection error");
             }
         }
@@ -84,7 +86,6 @@ impl Default for DbId {
     }
 }
 
-
 impl FromStr for DbId {
     type Err = uuid::Error;
     fn from_str(id: &str) -> Result<Self, Self::Err> {
@@ -109,3 +110,4 @@ pub mod test {
         })
     }
 }
+

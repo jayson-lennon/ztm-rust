@@ -25,7 +25,7 @@ sqlx = { version = "0.5", features = [
   "uuid",
 ] }
 handlebars = { version = "4", features = ["dir_source"] }
-rocket = { version = "0.5.0-rc.1", features = ["json"] }
+rocket = { version = "0.5.0-rc.2", features = ["json"] }
 structopt = "0.3"
 dotenv = "0.15"
 tokio = "1.8.0"
