@@ -33,9 +33,7 @@ impl TryFrom<Clip> for crate::domain::Clip {
             expires: field::Expires::new(clip.expires.map(Time::from_naive_utc)),
             password: field::Password::new(clip.password.unwrap_or_default())?,
             hits: field::Hits::new(u64::try_from(clip.hits)?),
-        }
-
-        )
+        })
     }
 }
 
@@ -47,7 +45,7 @@ pub struct GetClip {
 impl From<crate::service::ask::GetClip> for GetClip {
     fn from(req: crate::service::ask::GetClip) -> Self {
         Self {
-            shortcode: req.shortcode.into_inner()
+            shortcode: req.shortcode.into_inner(),
         }
     }
 }
@@ -55,7 +53,7 @@ impl From<crate::service::ask::GetClip> for GetClip {
 impl From<ShortCode> for GetClip {
     fn from(shortcode: ShortCode) -> Self {
         GetClip {
-            shortcode: shortcode.into_inner()
+            shortcode: shortcode.into_inner(),
         }
     }
 }
@@ -107,7 +105,8 @@ impl From<crate::service::ask::UpdateClip> for UpdateClip {
             title: req.title.into_inner(),
             expires: req.expires.into_inner().map(|time| time.timestamp()),
             password: req.password.into_inner(),
-            shortcode: ShortCode::default().into(),
+            shortcode: req.shortcode.as_str().to_string(),
         }
     }
 }
+
