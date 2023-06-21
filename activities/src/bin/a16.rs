@@ -8,7 +8,4 @@
 // * Use a struct containing the student's name and locker assignment
 // * The locker assignment should use an Option<i32>
 
-// * Use a struct containing the student's name and locker assignment
-// * The locker assignment should use an Option<i32>
-
 fn main() {}
