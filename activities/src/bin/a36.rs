@@ -14,6 +14,6 @@ fn data() -> &'static [u64] {
 }
 
 fn main() {
-    // `stream` is an iterator of Option<&[u64]>
+    // `stream` is an iterator of &[u64]
     let mut stream = data().chunks(2);
 }
