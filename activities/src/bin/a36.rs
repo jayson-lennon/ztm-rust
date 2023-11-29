@@ -22,7 +22,7 @@ fn process_chunk(data: &[u64]) {
 }
 
 fn main() {
-    // `stream` is an iterator of Option<&[u64]>
+    // `stream` is an iterator of &[u64]
     let stream = data().chunks(2);
     for chunk in stream {
         process_chunk(chunk);
