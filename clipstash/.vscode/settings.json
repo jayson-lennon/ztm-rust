@@ -1,5 +1,0 @@
-{
-    "rust-analyzer.server.extraEnv": {
-        "DATABASE_URL": "sqlite:data.db"
-    }
-}
