@@ -12,6 +12,7 @@
 // - Create a struct named `FileStore` and then implement the `MessageQueueStorage` trait on it
 //   - The implementation should save the entire queue to a single file and also load it from a
 //     single file
+//   - Implement a `new` method which allows specifying the file path
 // - Use the provided `FileStoreError` type for errors that occur in your implementation and then
 //   convert it to `MessageQueueStorageError` in the trait method
 //   - This can be done automatically by using the question mark operator
@@ -30,7 +31,6 @@
 //     - use the `serde_json` crate to perform the serialize and deserialize operation
 
 use std::collections::VecDeque;
-use std::io::BufRead;
 use std::num::ParseIntError;
 use std::path::PathBuf;
 
@@ -139,6 +139,7 @@ impl FileStore {
 
     fn load_impl(&self) -> Result<MessageQueue, FileStoreError> {
         use std::fs::OpenOptions;
+        use std::io::BufRead;
         use std::io::BufReader;
 
         let reader = {
