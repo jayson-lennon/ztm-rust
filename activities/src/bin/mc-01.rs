@@ -80,6 +80,27 @@ enum FileStoreError {
 }
 
 /// Allows conversion of error type using question mark operator.
+///
+/// *****************************
+/// You can convert a `FileStoreError` to a `MessageQueueStorageError` using `map_err`:
+///
+///    fn foo() -> Result<(), MessageQueueStorageError> {
+///        do_fallible_thing().map_err(MessageQueueStorageError::from)
+///    }
+///
+/// You can also use the question mark operator:
+///
+///    fn foo() -> Result<(), MessageQueueStorageError> {
+///        let result = do_fallible_thing()?;
+///        Ok(result)
+///    }
+///
+/// or
+///
+///    fn foo() -> Result<(), MessageQueueStorageError> {
+///        Ok(do_fallible_thing()?);
+///    }
+/// *****************************
 impl From<FileStoreError> for MessageQueueStorageError {
     fn from(value: FileStoreError) -> Self {
         Self {
@@ -122,14 +143,21 @@ impl MessageQueue {
 }
 
 /********************************************
-* Add your code here
+* Add your code here:
+* - `MessageQueueStorage` trait
+* - `FileStore` struct
+* - implementation blocks
 ********************************************/
 
+/// *****************************************************************
+/// use `cargo test --bin mc-01` to check your work.
+/// *****************************************************************
+/// use `cargo run --bin mc-01` to experiment using the main function
+/// *****************************************************************
 fn main() -> color_eyre::Result<()> {
     // show pretty error output
     color_eyre::install().unwrap();
 
-    // you can use this sample queue to iterate on your work
     let mut queue = MessageQueue::default();
     queue.enqueue("first message");
     queue.enqueue("second message");
