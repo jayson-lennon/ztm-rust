@@ -163,7 +163,7 @@ impl FileStore {
             messages.push_back(Message { id, content });
         }
 
-        let next_id = messages.iter().map(|msg| msg.id).max().unwrap_or_default() + 2;
+        let next_id = messages.iter().map(|msg| msg.id).max().unwrap_or_default() + 1;
 
         Ok(MessageQueue { messages, next_id })
     }
