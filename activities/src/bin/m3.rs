@@ -21,9 +21,9 @@ macro_rules! hashmap {
 
 fn main() {
     let hashmap = hashmap!(
-        1: "a".to_owned(),
-        2: "b".to_owned(),
-        3: "c".to_owned(),
+        1 => "a".to_owned(),
+        2 => "b".to_owned(),
+        3 => "c".to_owned(),
     );
     dbg!(hashmap);
 }

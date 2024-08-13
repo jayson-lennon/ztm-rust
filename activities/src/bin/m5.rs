@@ -26,7 +26,7 @@ fn sample_fn(n: u8) -> Size {
     match n {
         0..=53 => Small,
         54..=154 => Medium,
-        155.. => Large
+        155.. => Large,
     }
 }
 
@@ -54,11 +54,11 @@ mod test {
     }
 
     multi_test!(sample_fn:
-        sample_fn_small_min -> (0, Size::Small)
-        sample_fn_small_max -> (53, Size::Small)
-        sample_fn_medium_min -> (54, Size::Medium)
-        sample_fn_medium_max -> (154, Size::Medium)
-        sample_fn_large_min -> (155, Size::Large)
-        sample_fn_large_max -> (255, Size::Large)
+        sample_fn_small_min -> (0, Size::Small),
+        sample_fn_small_max -> (53, Size::Small),
+        sample_fn_medium_min -> (54, Size::Medium),
+        sample_fn_medium_max -> (154, Size::Medium),
+        sample_fn_large_min -> (155, Size::Large),
+        sample_fn_large_max -> (255, Size::Large),
     );
 }
