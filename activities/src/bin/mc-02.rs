@@ -111,7 +111,16 @@ where
 }
 
 fn main() {
-    let mut inventory = InventoryQuantityTracker::new(BasicInventory::default());
+    /******************************************************
+     * Change the below line to create your proxy structure
+     ******************************************************/
+    let mut inventory = BasicInventory::default();
+
+    /***********************************************************************************************
+     * Do not change anything else in this function. When implemented correctly, you should get 2
+     * alerts printed to the terminal.
+     **********************************************************************************************/
+
     // should have an alert
     inventory.update_quantity("apple", 50);
 
