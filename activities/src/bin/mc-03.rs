@@ -11,12 +11,16 @@
 //   - `deposit`: adds a specified amount to the account.
 // - Implement the `AccountExtensions` trait for any type that implements the `Account` trait by
 //   using a blanket implementation.
+// -
 //
 // Expected Output:
 //   Processed transaction of $50.00. New balance: $150.00
 //   Processed transaction of -$30.00. New balance: $120.00
 //   Processed transaction of $20.00. New balance: $140.00
 
+/**********************************************
+* Do not change
+**********************************************/
 trait Account {
     fn process(&mut self, amount: f64);
 }
@@ -25,6 +29,9 @@ struct BankAccount {
     balance: f64,
 }
 
+/**********************************************
+* Do not change
+**********************************************/
 impl BankAccount {
     fn new(initial_balance: f64) -> Self {
         BankAccount {
@@ -33,6 +40,9 @@ impl BankAccount {
     }
 }
 
+/**********************************************
+* Do not change
+**********************************************/
 impl Account for BankAccount {
     fn process(&mut self, amount: f64) {
         self.balance += amount;
