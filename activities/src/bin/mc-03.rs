@@ -7,8 +7,8 @@
 //
 // Requirements:
 // - Create an extension trait named `AccountExt` that adds two methods to the `Account` trait:
-//   - `withdraw`: withdraws a specified amount from the account.
-//   - `refund`: refunds a specified amount to the account.
+//   - `withdraw`: removes a specified amount from the account.
+//   - `deposit`: adds a specified amount to the account.
 // - Implement the `AccountExtensions` trait for any type that implements the `Account` trait by
 //   using a blanket implementation.
 //
