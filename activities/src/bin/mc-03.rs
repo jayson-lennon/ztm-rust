@@ -11,7 +11,7 @@
 //   - `deposit`: adds a specified amount to the account.
 // - Implement the `AccountExtensions` trait for any type that implements the `Account` trait by
 //   using a blanket implementation.
-// -
+// - Do not change any of the existing code. Only add and implement an extension trait.
 //
 // Expected Output:
 //   Processed transaction of $50.00. New balance: $150.00
@@ -53,6 +53,9 @@ impl Account for BankAccount {
     }
 }
 
+/**********************************************
+* Do not change
+**********************************************/
 fn main() {
     let mut account = BankAccount::new(100.0);
 
