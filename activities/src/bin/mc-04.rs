@@ -21,8 +21,6 @@
 // - The `.max()` method on iterators won't work for f64. Consider writing a `for` loop and
 //   manually track the highest temperature, or use `.fold`
 
-use core::f64;
-
 #[derive(Debug, Default)]
 struct TemperatureSensor {
     readings: Vec<f64>,
