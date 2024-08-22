@@ -4,7 +4,11 @@ use clap::{Parser, Subcommand};
 use error_stack::{Report, Result, ResultExt};
 use track::{
     error::Suggestion,
-    feature::tracker::{FlatFileTracker, TimeTracker},
+    feature::{
+        gui::GuiApp,
+        report::duration_format::{self, DurationFormat},
+        tracker::{FlatFileTracker, TimeTracker},
+    },
     init::{self, ENV_FILTER_TARGETS},
     AppError,
 };
@@ -34,6 +38,9 @@ enum Command {
 
     /// Report tracked time for today
     Report,
+
+    /// Open the track GUI
+    Gui,
 }
 
 fn main() -> Result<(), AppError> {
@@ -83,6 +90,7 @@ fn main() -> Result<(), AppError> {
                 .is_tracking()
                 .change_context(AppError)
                 .attach_printable("failed to determine current tracking status")?
+                .is_some()
             {
                 return Err(Report::from(AppError))
                     .attach_printable("time tracker is already running")
@@ -98,6 +106,7 @@ fn main() -> Result<(), AppError> {
                 .is_tracking()
                 .change_context(AppError)
                 .attach_printable("failed to determine current tracking status")?
+                .is_some()
             {
                 tracker
                     .stop()
@@ -113,13 +122,21 @@ fn main() -> Result<(), AppError> {
                 .records()
                 .change_context(AppError)
                 .attach_printable("failed to query records")?;
-            let reporter = TrackingReport::new(records);
+            let reporter = TrackingReport;
 
             let duration = {
-                let duration = reporter.duration(Utc::now(), ReportTimespan::Today);
-                humantime::format_duration(duration)
+                let duration = reporter.duration(Utc::now(), ReportTimespan::Today, &records);
+                duration_format::HourMinSecFormatter.format(duration)
             };
             println!("{duration}");
+        }
+        Command::Gui => {
+            let app = GuiApp::new(Box::new(tracker))
+                .change_context(AppError)
+                .attach_printable("failed to initialize GUI")?;
+            track::feature::gui::run(app)
+                .change_context(AppError)
+                .attach_printable("failed to run GUI")?;
         }
     }
 

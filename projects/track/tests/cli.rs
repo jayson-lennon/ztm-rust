@@ -82,7 +82,7 @@ fn reports_time_tracked() -> TestResult {
         .arg(lockfile.path())
         .arg("report")
         .assert()
-        .stdout("0s\n")
+        .stdout("00:00:00\n")
         .success();
 
     Ok(())

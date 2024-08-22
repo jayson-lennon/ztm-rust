@@ -26,7 +26,13 @@ pub struct FlatFileTracker {
 
 impl FlatFileTracker {
     /// Create a new flat file tracker.
-    pub fn new(records: PathBuf, lockfile: PathBuf) -> Result<Self, FlatFileTrackerError> {
+    pub fn new<R, L>(records: R, lockfile: L) -> Result<Self, FlatFileTrackerError>
+    where
+        R: Into<PathBuf>,
+        L: Into<PathBuf>,
+    {
+        let records = records.into();
+        let lockfile = lockfile.into();
         Ok(Self { records, lockfile })
     }
 }
@@ -71,19 +77,7 @@ impl TimeTracker for FlatFileTracker {
     }
 
     fn stop(&mut self) -> Result<EndTime, TimeTrackerError> {
-        let mut lockfile_data = String::default();
-        OpenOptions::new()
-            .read(true)
-            .open(&self.lockfile)
-            .change_context(TimeTrackerError)
-            .attach_printable("failed to open lockfile")?
-            .read_to_string(&mut lockfile_data)
-            .change_context(TimeTrackerError)
-            .attach_printable("failed to read lockfile")?;
-
-        let lockfile_data: LockfileData = serde_json::from_str(&lockfile_data)
-            .change_context(TimeTrackerError)
-            .attach_printable("failed to deserialize lockfile")?;
+        let lockfile_data = read_lockfile(&self.lockfile)?;
 
         let mut records = load_records(&self.records)?;
         records.push(TimeRecord {
@@ -103,8 +97,13 @@ impl TimeTracker for FlatFileTracker {
         load_records(&self.records)
     }
 
-    fn is_tracking(&self) -> Result<bool, TimeTrackerError> {
-        Ok(self.lockfile.exists())
+    fn is_tracking(&self) -> Result<Option<StartTime>, TimeTrackerError> {
+        if self.lockfile.exists() {
+            let lockfile_data = read_lockfile(&self.lockfile)?;
+            Ok(Some(lockfile_data.start_time))
+        } else {
+            Ok(None)
+        }
     }
 }
 
@@ -150,6 +149,22 @@ fn save_records(db: &Path, records: &[TimeRecord]) -> Result<(), TimeTrackerErro
         .attach_printable("failed to write db")
 }
 
+fn read_lockfile(lockfile: &Path) -> Result<LockfileData, TimeTrackerError> {
+    let mut lockfile_data = String::default();
+    OpenOptions::new()
+        .read(true)
+        .open(lockfile)
+        .change_context(TimeTrackerError)
+        .attach_printable("failed to open lockfile")?
+        .read_to_string(&mut lockfile_data)
+        .change_context(TimeTrackerError)
+        .attach_printable("failed to read lockfile")?;
+    let lockfile_data: LockfileData = serde_json::from_str(&lockfile_data)
+        .change_context(TimeTrackerError)
+        .attach_printable("failed to deserialize lockfile")?;
+    Ok(lockfile_data)
+}
+
 #[cfg(test)]
 mod tests {
     use assert_fs::{
@@ -168,22 +183,22 @@ mod tests {
     }
 
     #[test]
-    fn is_tracking_false_when_lockfile_missing() {
+    fn is_tracking_none_when_lockfile_missing() {
         let (_tree, db, lockfile) = tracking_paths().unwrap();
 
         let tracker = FlatFileTracker::new(db.to_path_buf(), lockfile.to_path_buf()).unwrap();
 
-        assert!(!tracker.is_tracking().unwrap());
+        assert!(tracker.is_tracking().unwrap().is_none());
     }
 
     #[test]
-    fn is_tracking_true_when_lockfile_found() {
+    fn is_tracking_some_when_lockfile_found() {
         let (_tree, db, lockfile) = tracking_paths().unwrap();
 
         let mut tracker = FlatFileTracker::new(db.to_path_buf(), lockfile.to_path_buf()).unwrap();
         tracker.start().unwrap();
 
-        assert!(tracker.is_tracking().unwrap());
+        assert!(tracker.is_tracking().unwrap().is_some());
     }
 
     #[test]

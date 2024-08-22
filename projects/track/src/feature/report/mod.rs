@@ -1,10 +1,11 @@
-use std::time::Duration;
+//! Statistics reporting
 
-use chrono::{DateTime, Utc};
-
-use crate::common::UtcToLocal;
+pub mod duration_format;
 
 use super::tracker::TimeRecord;
+use crate::common::UtcToLocal;
+use chrono::{DateTime, Utc};
+use std::time::Duration;
 
 /// The interval of time to use when generating a report.
 #[derive(Debug, Clone, Copy)]
@@ -15,19 +16,18 @@ pub enum ReportTimespan {
 
 /// Tracking statistics
 #[derive(Debug, Clone)]
-pub struct TrackingReport {
-    records: Vec<TimeRecord>,
-}
+pub struct TrackingReport;
 
 impl TrackingReport {
-    pub fn new(records: Vec<TimeRecord>) -> Self {
-        Self { records }
-    }
-
     /// Returns the total duration tracked.
     ///
     /// Calculation will use the complete `timespan` starting at the `from` time.
-    pub fn duration(&self, from: DateTime<Utc>, timespan: ReportTimespan) -> Duration {
+    pub fn duration(
+        &self,
+        from: DateTime<Utc>,
+        timespan: ReportTimespan,
+        records: &[TimeRecord],
+    ) -> Duration {
         match timespan {
             ReportTimespan::Today => {
                 let now = from.to_local();
@@ -35,8 +35,7 @@ impl TrackingReport {
                 let midnight = now.date_naive().and_hms_opt(0, 0, 0).unwrap();
                 let end_of_day = now.date_naive().and_hms_opt(23, 59, 59).unwrap();
 
-                let total_seconds = self
-                    .records
+                let total_seconds = records
                     .iter()
                     .filter_map(|rec| {
                         let start_local = rec.start.to_local().naive_local();
@@ -78,8 +77,8 @@ mod tests {
         .map(TimeRecord::from_seconds)
         .collect::<Vec<_>>();
 
-        let report = TrackingReport::new(records);
-        let duration = report.duration(now, ReportTimespan::Today);
+        let report = TrackingReport;
+        let duration = report.duration(now, ReportTimespan::Today, &records);
 
         assert_eq!(duration, Duration::from_secs(15));
     }

@@ -1,12 +1,12 @@
+//! Time tracking implementations
+
 mod flatfile;
 
+use crate::common::UtcToLocal;
 use chrono::{DateTime, Local, Utc};
 use error_stack::Result;
-use serde::{Deserialize, Serialize};
-
 pub use flatfile::FlatFileTracker;
-
-use crate::common::UtcToLocal;
+use serde::{Deserialize, Serialize};
 
 /// The start of a tracked time record.
 #[derive(Debug, Clone, Copy, Serialize, Deserialize)]
@@ -15,6 +15,12 @@ pub struct StartTime(DateTime<Utc>);
 impl StartTime {
     pub fn now() -> Self {
         Self(Utc::now())
+    }
+}
+
+impl AsRef<DateTime<Utc>> for StartTime {
+    fn as_ref(&self) -> &DateTime<Utc> {
+        &self.0
     }
 }
 
@@ -63,8 +69,8 @@ pub trait TimeTracker {
     /// Returns all tracking records.
     fn records(&self) -> Result<Vec<TimeRecord>, TimeTrackerError>;
 
-    /// Returns `true` when currently tracking.
-    fn is_tracking(&self) -> Result<bool, TimeTrackerError>;
+    /// Returns `Some` when there is currently time being tracked.
+    fn is_tracking(&self) -> Result<Option<StartTime>, TimeTrackerError>;
 }
 
 #[cfg(test)]
