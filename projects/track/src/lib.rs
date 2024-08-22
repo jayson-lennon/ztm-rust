@@ -2,8 +2,7 @@
 #[error("an application error has occurred")]
 pub struct AppError;
 
+pub mod common;
 pub mod error;
+pub mod feature;
 pub mod init;
-pub mod tracker;
-
-pub use tracker::TimeTracker;

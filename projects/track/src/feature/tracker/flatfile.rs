@@ -159,7 +159,6 @@ mod tests {
     };
 
     use super::*;
-    use crate::TimeTracker;
 
     fn tracking_paths() -> Result<(TempDir, ChildPath, ChildPath), FixtureError> {
         let temp = TempDir::new()?;

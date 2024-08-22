@@ -4,9 +4,9 @@ use clap::{Parser, Subcommand};
 use error_stack::{Report, Result, ResultExt};
 use track::{
     error::Suggestion,
+    feature::tracker::{FlatFileTracker, TimeTracker},
     init::{self, ENV_FILTER_TARGETS},
-    tracker::FlatFileTracker,
-    AppError, TimeTracker,
+    AppError,
 };
 
 #[derive(Parser, Debug)]
@@ -31,6 +31,9 @@ enum Command {
 
     /// Stop tracking time
     Stop,
+
+    /// Report tracked time for today
+    Report,
 }
 
 fn main() -> Result<(), AppError> {
@@ -101,6 +104,22 @@ fn main() -> Result<(), AppError> {
                     .change_context(AppError)
                     .attach_printable("failed to stop tracking")?;
             }
+        }
+        Command::Report => {
+            use chrono::Utc;
+            use track::feature::report::{ReportTimespan, TrackingReport};
+
+            let records = tracker
+                .records()
+                .change_context(AppError)
+                .attach_printable("failed to query records")?;
+            let reporter = TrackingReport::new(records);
+
+            let duration = {
+                let duration = reporter.duration(Utc::now(), ReportTimespan::Today);
+                humantime::format_duration(duration)
+            };
+            println!("{duration}");
         }
     }
 
