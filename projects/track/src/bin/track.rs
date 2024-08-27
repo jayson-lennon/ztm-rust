@@ -5,7 +5,6 @@ use error_stack::{Report, Result, ResultExt};
 use track::{
     error::Suggestion,
     feature::{
-        gui::GuiApp,
         report::duration_format::{self, DurationFormat},
         tracker::{FlatFileTracker, TimeTracker},
     },
@@ -38,9 +37,6 @@ enum Command {
 
     /// Report tracked time for today
     Report,
-
-    /// Open the track GUI
-    Gui,
 }
 
 fn main() -> Result<(), AppError> {
@@ -87,7 +83,7 @@ fn main() -> Result<(), AppError> {
     match args.command {
         Command::Start => {
             if tracker
-                .is_tracking()
+                .running()
                 .change_context(AppError)
                 .attach_printable("failed to determine current tracking status")?
                 .is_some()
@@ -103,7 +99,7 @@ fn main() -> Result<(), AppError> {
         }
         Command::Stop => {
             if tracker
-                .is_tracking()
+                .running()
                 .change_context(AppError)
                 .attach_printable("failed to determine current tracking status")?
                 .is_some()
@@ -129,14 +125,6 @@ fn main() -> Result<(), AppError> {
                 duration_format::HourMinSecFormatter.format(duration)
             };
             println!("{duration}");
-        }
-        Command::Gui => {
-            let app = GuiApp::new(Box::new(tracker))
-                .change_context(AppError)
-                .attach_printable("failed to initialize GUI")?;
-            track::feature::gui::run(app)
-                .change_context(AppError)
-                .attach_printable("failed to run GUI")?;
         }
     }
 

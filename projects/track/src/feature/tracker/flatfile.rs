@@ -80,9 +80,10 @@ impl TimeTracker for FlatFileTracker {
         let lockfile_data = read_lockfile(&self.lockfile)?;
 
         let mut records = load_records(&self.records)?;
+        let end = EndTime::now();
         records.push(TimeRecord {
             start: lockfile_data.start_time,
-            end: EndTime::now(),
+            end,
         });
         save_records(&self.records, &records)?;
 
@@ -90,14 +91,14 @@ impl TimeTracker for FlatFileTracker {
             .change_context(TimeTrackerError)
             .attach_printable("failed to remove lockfile")?;
 
-        Ok(EndTime::now())
+        Ok(end)
     }
 
     fn records(&self) -> Result<Vec<TimeRecord>, TimeTrackerError> {
         load_records(&self.records)
     }
 
-    fn is_tracking(&self) -> Result<Option<StartTime>, TimeTrackerError> {
+    fn running(&self) -> Result<Option<StartTime>, TimeTrackerError> {
         if self.lockfile.exists() {
             let lockfile_data = read_lockfile(&self.lockfile)?;
             Ok(Some(lockfile_data.start_time))
@@ -183,22 +184,22 @@ mod tests {
     }
 
     #[test]
-    fn is_tracking_none_when_lockfile_missing() {
+    fn running_is_none_when_lockfile_missing() {
         let (_tree, db, lockfile) = tracking_paths().unwrap();
 
         let tracker = FlatFileTracker::new(db.to_path_buf(), lockfile.to_path_buf()).unwrap();
 
-        assert!(tracker.is_tracking().unwrap().is_none());
+        assert!(tracker.running().unwrap().is_none());
     }
 
     #[test]
-    fn is_tracking_some_when_lockfile_found() {
+    fn running_is_some_when_lockfile_found() {
         let (_tree, db, lockfile) = tracking_paths().unwrap();
 
         let mut tracker = FlatFileTracker::new(db.to_path_buf(), lockfile.to_path_buf()).unwrap();
         tracker.start().unwrap();
 
-        assert!(tracker.is_tracking().unwrap().is_some());
+        assert!(tracker.running().unwrap().is_some());
     }
 
     #[test]
