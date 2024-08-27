@@ -183,11 +183,15 @@ mod tests {
         Ok((temp, db, lockfile))
     }
 
+    fn new_flat_file_tracker(db: ChildPath, lockfile: &ChildPath) -> FlatFileTracker {
+        FlatFileTracker::new(db.to_path_buf(), lockfile.to_path_buf())
+    }
+
     #[test]
     fn running_is_none_when_lockfile_missing() {
         let (_tree, db, lockfile) = tracking_paths().unwrap();
 
-        let tracker = FlatFileTracker::new(db.to_path_buf(), lockfile.to_path_buf());
+        let tracker = new_flat_file_tracker(db, &lockfile);
 
         assert!(tracker.running().unwrap().is_none());
     }
@@ -196,7 +200,7 @@ mod tests {
     fn running_is_some_when_lockfile_found() {
         let (_tree, db, lockfile) = tracking_paths().unwrap();
 
-        let mut tracker = FlatFileTracker::new(db.to_path_buf(), lockfile.to_path_buf());
+        let mut tracker = new_flat_file_tracker(db, &lockfile);
         tracker.start().unwrap();
 
         assert!(tracker.running().unwrap().is_some());
@@ -206,7 +210,7 @@ mod tests {
     fn starts_tracking() {
         let (_tree, db, lockfile) = tracking_paths().unwrap();
 
-        let mut tracker = FlatFileTracker::new(db.to_path_buf(), lockfile.to_path_buf());
+        let mut tracker = new_flat_file_tracker(db, &lockfile);
 
         assert!(tracker.start().is_ok());
     }
@@ -216,7 +220,7 @@ mod tests {
         let (_tree, db, lockfile) = tracking_paths().unwrap();
         lockfile.touch().unwrap();
 
-        let mut tracker = FlatFileTracker::new(db.to_path_buf(), lockfile.to_path_buf());
+        let mut tracker = new_flat_file_tracker(db, &lockfile);
 
         assert!(tracker.start().is_err());
     }
@@ -225,7 +229,7 @@ mod tests {
     fn lockfile_created_when_tracking_starts() {
         let (_tree, db, lockfile) = tracking_paths().unwrap();
 
-        let mut tracker = FlatFileTracker::new(db.to_path_buf(), lockfile.to_path_buf());
+        let mut tracker = new_flat_file_tracker(db, &lockfile);
         tracker.start().unwrap();
 
         assert!(lockfile.path().exists());
@@ -235,7 +239,7 @@ mod tests {
     fn lockfile_deleted_when_tracking_stops() {
         let (_tree, db, lockfile) = tracking_paths().unwrap();
 
-        let mut tracker = FlatFileTracker::new(db.to_path_buf(), lockfile.to_path_buf());
+        let mut tracker = new_flat_file_tracker(db, &lockfile);
         tracker.start().unwrap();
         tracker.stop().unwrap();
 
@@ -246,7 +250,7 @@ mod tests {
     fn time_record_created_when_tracking_stops() {
         let (_tree, db, lockfile) = tracking_paths().unwrap();
 
-        let mut tracker = FlatFileTracker::new(db.to_path_buf(), lockfile.to_path_buf());
+        let mut tracker = new_flat_file_tracker(db, &lockfile);
         tracker.start().unwrap();
         tracker.stop().unwrap();
 
@@ -257,7 +261,7 @@ mod tests {
     fn stops_tracking() {
         let (_tree, db, lockfile) = tracking_paths().unwrap();
 
-        let mut tracker = FlatFileTracker::new(db.to_path_buf(), lockfile.to_path_buf());
+        let mut tracker = new_flat_file_tracker(db, &lockfile);
         tracker.start().unwrap();
 
         assert!(tracker.stop().is_ok());
