@@ -26,14 +26,14 @@ pub struct FlatFileTracker {
 
 impl FlatFileTracker {
     /// Create a new flat file tracker.
-    pub fn new<R, L>(records: R, lockfile: L) -> Result<Self, FlatFileTrackerError>
+    pub fn new<R, L>(records: R, lockfile: L) -> Self
     where
         R: Into<PathBuf>,
         L: Into<PathBuf>,
     {
         let records = records.into();
         let lockfile = lockfile.into();
-        Ok(Self { records, lockfile })
+        Self { records, lockfile }
     }
 }
 
@@ -51,7 +51,9 @@ struct RecordsData {
 
 impl TimeTracker for FlatFileTracker {
     fn start(&mut self) -> Result<StartTime, TimeTrackerError> {
-        if !self.lockfile.exists() {
+        if self.lockfile.exists() {
+            Err(Report::from(TimeTrackerError)).attach_printable("already tracking")
+        } else {
             let start_time = StartTime::now();
 
             let serialized = {
@@ -71,8 +73,6 @@ impl TimeTracker for FlatFileTracker {
                 .attach_printable("failed to write lockfile data")?;
 
             Ok(start_time)
-        } else {
-            Err(Report::from(TimeTrackerError)).attach_printable("already tracking")
         }
     }
 
@@ -123,12 +123,12 @@ fn load_records(db: &Path) -> Result<Vec<TimeRecord>, TimeTrackerError> {
         .change_context(TimeTrackerError)
         .attach_printable("failed to read db")?;
 
-    if !buf.is_empty() {
+    if buf.is_empty() {
+        Ok(Vec::default())
+    } else {
         serde_json::from_str(&buf)
             .change_context(TimeTrackerError)
             .attach_printable("failed to deserialize records")
-    } else {
-        Ok(Vec::default())
     }
 }
 
@@ -187,7 +187,7 @@ mod tests {
     fn running_is_none_when_lockfile_missing() {
         let (_tree, db, lockfile) = tracking_paths().unwrap();
 
-        let tracker = FlatFileTracker::new(db.to_path_buf(), lockfile.to_path_buf()).unwrap();
+        let tracker = FlatFileTracker::new(db.to_path_buf(), lockfile.to_path_buf());
 
         assert!(tracker.running().unwrap().is_none());
     }
@@ -196,7 +196,7 @@ mod tests {
     fn running_is_some_when_lockfile_found() {
         let (_tree, db, lockfile) = tracking_paths().unwrap();
 
-        let mut tracker = FlatFileTracker::new(db.to_path_buf(), lockfile.to_path_buf()).unwrap();
+        let mut tracker = FlatFileTracker::new(db.to_path_buf(), lockfile.to_path_buf());
         tracker.start().unwrap();
 
         assert!(tracker.running().unwrap().is_some());
@@ -206,7 +206,7 @@ mod tests {
     fn starts_tracking() {
         let (_tree, db, lockfile) = tracking_paths().unwrap();
 
-        let mut tracker = FlatFileTracker::new(db.to_path_buf(), lockfile.to_path_buf()).unwrap();
+        let mut tracker = FlatFileTracker::new(db.to_path_buf(), lockfile.to_path_buf());
 
         assert!(tracker.start().is_ok());
     }
@@ -216,7 +216,7 @@ mod tests {
         let (_tree, db, lockfile) = tracking_paths().unwrap();
         lockfile.touch().unwrap();
 
-        let mut tracker = FlatFileTracker::new(db.to_path_buf(), lockfile.to_path_buf()).unwrap();
+        let mut tracker = FlatFileTracker::new(db.to_path_buf(), lockfile.to_path_buf());
 
         assert!(tracker.start().is_err());
     }
@@ -225,7 +225,7 @@ mod tests {
     fn lockfile_created_when_tracking_starts() {
         let (_tree, db, lockfile) = tracking_paths().unwrap();
 
-        let mut tracker = FlatFileTracker::new(db.to_path_buf(), lockfile.to_path_buf()).unwrap();
+        let mut tracker = FlatFileTracker::new(db.to_path_buf(), lockfile.to_path_buf());
         tracker.start().unwrap();
 
         assert!(lockfile.path().exists());
@@ -235,7 +235,7 @@ mod tests {
     fn lockfile_deleted_when_tracking_stops() {
         let (_tree, db, lockfile) = tracking_paths().unwrap();
 
-        let mut tracker = FlatFileTracker::new(db.to_path_buf(), lockfile.to_path_buf()).unwrap();
+        let mut tracker = FlatFileTracker::new(db.to_path_buf(), lockfile.to_path_buf());
         tracker.start().unwrap();
         tracker.stop().unwrap();
 
@@ -246,7 +246,7 @@ mod tests {
     fn time_record_created_when_tracking_stops() {
         let (_tree, db, lockfile) = tracking_paths().unwrap();
 
-        let mut tracker = FlatFileTracker::new(db.to_path_buf(), lockfile.to_path_buf()).unwrap();
+        let mut tracker = FlatFileTracker::new(db.to_path_buf(), lockfile.to_path_buf());
         tracker.start().unwrap();
         tracker.stop().unwrap();
 
@@ -257,7 +257,7 @@ mod tests {
     fn stops_tracking() {
         let (_tree, db, lockfile) = tracking_paths().unwrap();
 
-        let mut tracker = FlatFileTracker::new(db.to_path_buf(), lockfile.to_path_buf()).unwrap();
+        let mut tracker = FlatFileTracker::new(db.to_path_buf(), lockfile.to_path_buf());
         tracker.start().unwrap();
 
         assert!(tracker.stop().is_ok());

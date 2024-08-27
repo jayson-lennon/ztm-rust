@@ -62,21 +62,29 @@ pub struct TimeRecord {
 pub trait TimeTracker {
     /// Starts time tracking.
     ///
+    /// # Errors
+    ///
     /// Returns `Err` if the tracker is already running or if there was a problem starting the
     /// tracker.
     fn start(&mut self) -> Result<StartTime, TimeTrackerError>;
 
     /// Stops time tracking.
     ///
-    /// Returns `Err` if there was a problem starting the tracker.
+    /// # Errors
+    ///
+    /// Returns `Err` if there was a problem stopping the tracker.
     fn stop(&mut self) -> Result<EndTime, TimeTrackerError>;
 
     /// Returns all tracking records.
+    ///
+    /// # Errors
     ///
     /// Returns `Err` if there was a problem accessing the records.
     fn records(&self) -> Result<Vec<TimeRecord>, TimeTrackerError>;
 
     /// Returns `Some` if the tracker is currently tracking time.
+    ///
+    /// # Errors
     ///
     /// Returns `Err` if there was a problem accessing tracking data.
     fn running(&self) -> Result<Option<StartTime>, TimeTrackerError>;
@@ -95,9 +103,8 @@ pub mod tlib {
 
     impl TimeRecordTestExt for TimeRecord {
         fn from_seconds((start, end): (i64, i64)) -> TimeRecord {
-            if start > end {
-                panic!("start time cannot be greater than end time");
-            }
+            assert!(start <= end, "start time cannot be greater than end time");
+
             TimeRecord {
                 start: StartTime(DateTime::from_timestamp_millis(start * 1000).unwrap()),
                 end: EndTime(DateTime::from_timestamp_millis(end * 1000).unwrap()),

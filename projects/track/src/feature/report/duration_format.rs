@@ -18,7 +18,7 @@ impl DurationFormat for HourMinSecFormatter {
         let seconds = total_seconds % 60;
 
         // Format into HH:MM:SS
-        format!("{:02}:{:02}:{:02}", hours, minutes, seconds)
+        format!("{hours:02}:{minutes:02}:{seconds:02}")
     }
 }
 

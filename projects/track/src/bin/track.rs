@@ -76,9 +76,7 @@ fn main() -> Result<(), AppError> {
         }
     };
 
-    let mut tracker = FlatFileTracker::new(db_dir, lockfile)
-        .change_context(AppError)
-        .attach_printable("failed to initialize backend")?;
+    let mut tracker = FlatFileTracker::new(db_dir, lockfile);
 
     match args.command {
         Command::Start => {
