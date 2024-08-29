@@ -27,10 +27,5 @@ fn get_person(client: &reqwest::blocking::Client) -> Result<PersonResponse> {
 }
 
 fn main() -> Result<()> {
-    let client = reqwest::blocking::Client::default();
-    let person = get_person(&client);
-
-    println!("{person:?}");
-
     Ok(())
 }
