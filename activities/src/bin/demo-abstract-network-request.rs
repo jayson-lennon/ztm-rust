@@ -26,6 +26,11 @@ fn get_person(client: &reqwest::blocking::Client) -> Result<PersonResponse> {
     Ok(response)
 }
 
+#[derive(Debug, Default)]
+struct App {
+    client: reqwest::blocking::Client,
+}
+
 fn main() -> Result<()> {
     Ok(())
 }
