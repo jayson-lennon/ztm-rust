@@ -31,6 +31,12 @@ struct App {
     client: reqwest::blocking::Client,
 }
 
+impl App {
+    pub fn fetch_person(&self) -> Result<PersonResponse> {
+        get_person(&self.client)
+    }
+}
+
 fn main() -> Result<()> {
     Ok(())
 }
