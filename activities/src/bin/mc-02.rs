@@ -6,13 +6,13 @@
 //   inventory of an item gets low.
 //
 // Requirements:
-// - Create a proxy structure named `InventoryQuantityTracker` around `BasicInventory` that
+// - Create a proxy structure named `InventoryAlerter` around `BasicInventory` that
 //   prints a message whenever the quantity of an item reaches or falls below a threshold
 //   - The threshold should be specified per-item
 //   - The message should be `Low quantity of {item}: {amount}`
-//   - Implement a method named `set_alert_threshold` on the `InventoryQuantityTracker` to set
+//   - Implement a method named `set_alert_threshold` on the `InventoryAlerter` to set
 //     the alert threshold per item
-// - Update the main function to use the `InventoryQuantityTracker`
+// - Update the main function to use the `InventoryAlerter`
 // - When implemented correctly, you should get 2 alerts:
 //     low quantity of apple: 50
 //     low quantity of cilantro: 55
@@ -48,12 +48,12 @@ impl InventoryManager for BasicInventory {
 
 /// A proxy structure that adds alerting functionality to an inventory manager.
 #[derive(Debug, Default)]
-struct InventoryQuantityTracker<M> {
+struct InventoryAlerter<M> {
     thresholds: HashMap<String, i32>,
     manager: M,
 }
 
-impl<M> InventoryQuantityTracker<M>
+impl<M> InventoryAlerter<M>
 where
     M: InventoryManager,
 {
@@ -70,7 +70,7 @@ where
     }
 }
 
-impl<M> InventoryManager for InventoryQuantityTracker<M>
+impl<M> InventoryManager for InventoryAlerter<M>
 where
     M: InventoryManager,
 {
@@ -114,7 +114,7 @@ fn main() {
     /******************************************************
      * Change the below line to create your proxy structure
      ******************************************************/
-    let mut inventory = InventoryQuantityTracker::new(BasicInventory::default());
+    let mut inventory = InventoryAlerter::new(BasicInventory::default());
 
     /***********************************************************************************************
      * Do not change anything else in this function. When implemented correctly, you should get 2
