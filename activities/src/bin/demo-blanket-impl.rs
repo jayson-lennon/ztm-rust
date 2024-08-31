@@ -13,6 +13,16 @@ impl IdentifyUser for User {
     }
 }
 
+struct PowerUser {
+    user_id: u32,
+}
+
+impl IdentifyUser for PowerUser {
+    fn get_user_id(&self) -> u32 {
+        self.user_id
+    }
+}
+
 trait AuthenticateUser {
     fn authenticate(&self) -> bool;
 }
@@ -36,11 +46,11 @@ where
 }
 
 fn main() {
-    let user = User { user_id: 42 };
-
-    // using the `get_user_id` method from the `IdentifyUser` trait
+    let user = User { user_id: 41 };
     println!("User ID: {}", user.get_user_id());
-
-    // using the `authenticate` method from the `AuthenticateUser` supertrait
     println!("Authenticated: {}", user.authenticate());
+
+    let user = PowerUser { user_id: 42 };
+    println!("Power User ID: {}", user.get_user_id());
+    println!("Power User Authenticated: {}", user.authenticate());
 }
