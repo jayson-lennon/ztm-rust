@@ -114,7 +114,7 @@ fn main() {
     /******************************************************
      * Change the below line to create your proxy structure
      ******************************************************/
-    let mut inventory = BasicInventory::default();
+    let mut inventory = InventoryQuantityTracker::new(BasicInventory::default());
 
     /***********************************************************************************************
      * Do not change anything else in this function. When implemented correctly, you should get 2
