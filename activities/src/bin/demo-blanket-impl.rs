@@ -54,3 +54,4 @@ fn main() {
     println!("Power User ID: {}", user.get_user_id());
     println!("Power User Authenticated: {}", user.authenticate());
 }
+//
