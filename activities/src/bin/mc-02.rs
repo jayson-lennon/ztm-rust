@@ -6,7 +6,7 @@
 //   inventory of an item gets low.
 //
 // Requirements:
-// - Create a proxy structure named `InventoryQuantityTracker` around `InMemoryInventory` that
+// - Create a proxy structure named `InventoryQuantityTracker` around `BasicInventory` that
 //   prints a message whenever the quantity of an item reaches or falls below a threshold
 //   - The threshold should be specified per-item
 //   - The message should be `Low quantity of {item}: {amount}`
