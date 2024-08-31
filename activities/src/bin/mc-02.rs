@@ -76,21 +76,14 @@ where
 {
     fn update_quantity<I: Into<String>>(&mut self, item: I, amount: i32) {
         let item = item.into();
-        // set default threshold to 50 if it hasn't been previously set
-        self.thresholds.entry(item.clone()).or_insert_with(|| 50);
 
-        // send alert if the quantity is below the threshold
-        {
-            let existing_quantity = self.manager.get_quantity(&item).unwrap_or_default();
-            let threshold = self.thresholds[&item];
-            let new_quantity = existing_quantity + amount;
-            if new_quantity <= threshold {
-                println!("low quantity of {item}: {new_quantity}");
-            }
+        self.manager.update_quantity(item.clone(), amount);
+
+        let threshold = self.thresholds.entry(item.clone()).or_insert_with(|| 50);
+        let new_quantity = self.manager.get_quantity(&item).unwrap_or_default();
+        if &new_quantity <= threshold {
+            println!("low quantity of {item}: {new_quantity}");
         }
-
-        // delegate the call to the manager
-        self.manager.update_quantity(item, amount);
     }
 
     fn get_quantity<I: AsRef<str>>(&self, item: I) -> Option<i32> {
