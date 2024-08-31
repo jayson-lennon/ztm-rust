@@ -6,13 +6,13 @@
 //   inventory of an item gets low.
 //
 // Requirements:
-// - Create a proxy structure named `InventoryQuantityTracker` around `BasicInventory` that
+// - Create a proxy structure named `InventoryAlerter` around `BasicInventory` that
 //   prints a message whenever the quantity of an item reaches or falls below a threshold
 //   - The threshold should be specified per-item
 //   - The message should be `Low quantity of {item}: {amount}`
-//   - Implement a method named `set_alert_threshold` on the `InventoryQuantityTracker` to set
+//   - Implement a method named `set_alert_threshold` on the `InventoryAlerter` to set
 //     the alert threshold per item
-// - Update the main function to use the `InventoryQuantityTracker`
+// - Update the main function to use the `InventoryAlerter`
 // - When implemented correctly, you should get 2 alerts:
 //     low quantity of apple: 50
 //     low quantity of cilantro: 55
