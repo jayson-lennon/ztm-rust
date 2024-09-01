@@ -14,15 +14,15 @@
 // - Do not change any of the existing code. Only add and implement an extension trait.
 //
 // Expected Output:
-//   Processed transaction of $50.00. New balance: $150.00
-//   Processed transaction of -$30.00. New balance: $120.00
-//   Processed transaction of $20.00. New balance: $140.00
+//   Adjusted balance by $50.00. New balance: $150.00
+//   Adjusted balance by -$30.00. New balance: $120.00
+//   Adjusted balance by $20.00. New balance: $140.00
 
 /**********************************************
 * Do not change
 **********************************************/
 trait Account {
-    fn process(&mut self, amount: f64);
+    fn adjust(&mut self, amount: f64);
 }
 
 struct BankAccount {
@@ -44,10 +44,10 @@ impl BankAccount {
 * Do not change
 **********************************************/
 impl Account for BankAccount {
-    fn process(&mut self, amount: f64) {
+    fn adjust(&mut self, amount: f64) {
         self.balance += amount;
         println!(
-            "Processed transaction of ${:.2}. New balance: ${:.2}",
+            "Adjusted balance by ${:.2}. New balance: ${:.2}",
             amount, self.balance
         );
     }
@@ -60,7 +60,7 @@ fn main() {
     let mut account = BankAccount::new(100.0);
 
     // Using the basic process method to deposit money
-    account.process(50.0);
+    account.adjust(50.0);
 
     // Using the extended withdraw method to withdraw money
     account.withdraw(30.0);
