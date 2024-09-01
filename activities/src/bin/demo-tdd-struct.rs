@@ -1,19 +1,18 @@
 fn main() {}
 
-#[derive(Debug, Default, PartialEq, PartialOrd)]
+#[derive(Debug, Default, PartialEq)]
 struct Position {
-    pub x: f64,
-    pub y: f64,
+    x: f64,
+    y: f64,
 }
 
-#[derive(Debug, PartialEq, PartialOrd)]
+#[derive(Debug)]
 struct Circle {
-    pub center: Position,
-    pub radius: f64,
+    radius: f64,
+    position: Position,
 }
-
 impl Circle {
-    pub fn area(&self) -> f64 {
+    fn area(&self) -> f64 {
         use std::f64::consts::PI;
         PI * (self.radius * self.radius)
     }
@@ -22,8 +21,8 @@ impl Circle {
 impl Default for Circle {
     fn default() -> Self {
         Self {
-            center: Position::default(),
-            radius: 1.0,
+            radius: 2.0,
+            position: Position::default(),
         }
     }
 }
@@ -33,26 +32,27 @@ mod tests {
     use super::*;
 
     #[test]
-    fn default_circle_is_at_origin() {
-        let circle = Circle::default();
-        assert_eq!(circle.center, Position::default());
-    }
-
-    #[test]
-    fn default_circle_has_radius_gt_zero() {
+    fn default_circle_has_radius_greater_than_zero() {
         let circle = Circle::default();
         assert!(circle.radius > 0.0);
     }
 
     #[test]
+    fn default_circle_uses_default_position() {
+        let circle = Circle::default();
+        assert_eq!(circle.position, Position::default());
+    }
+
+    #[test]
     fn default_position_is_at_origin() {
+        // origin is (0,0)
         let position = Position::default();
         assert_eq!(position.x, 0.0);
         assert_eq!(position.y, 0.0);
     }
 
     #[test]
-    fn calculates_area_of_a_circle() {
+    fn calculates_area_of_a_circle_when_radius_gt_0() {
         use std::f64::consts::PI;
 
         // Given a default circle
@@ -61,11 +61,7 @@ mod tests {
         // When we calculate the area
         let area = circle.area();
 
-        // Then we get the correct area of the circle
-        //
-        // This equation produces a known good result. So if the implementation changes later (like
-        // if it's updated as an optimization or something), then we can confirm that our result is
-        // the same.
+        // Then we get the correct area of a circle
         let expected = PI * (circle.radius * circle.radius);
         assert_eq!(expected, area);
     }
