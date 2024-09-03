@@ -21,6 +21,8 @@
 // - The `.max()` method on iterators won't work for f64. Consider writing a `for` loop and
 //   manually track the highest temperature, or use `.fold`
 
+fn main() {}
+
 #[derive(Debug, Default)]
 struct TemperatureSensor {
     readings: Vec<f64>,
@@ -50,8 +52,6 @@ impl TemperatureSensor {
     }
 }
 
-fn main() {}
-
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -79,35 +79,37 @@ mod tests {
     #[test]
     fn records_a_temperature() {
         let mut sensor = TemperatureSensor::default();
+
         sensor.record_temperature(30.0);
+
         assert!(!sensor.is_empty());
     }
 
     #[test]
-    fn returns_average_temperature_with_one_reading() {
-        let sensor = TemperatureSensor::with_temps(&[30.0]);
-
-        let average = sensor.get_average_temperature();
-
-        assert_eq!(average, Some(30.0));
-    }
-
-    #[test]
-    fn returns_average_temperature_with_more_than_one_reading() {
-        let sensor = TemperatureSensor::with_temps(&[30.0, 40.0]);
-
-        let average = sensor.get_average_temperature();
-
-        assert_eq!(average, Some(35.0));
-    }
-
-    #[test]
-    fn average_returns_none_when_no_readings_are_present() {
+    fn returns_average_temperature_with_no_readings() {
         let sensor = TemperatureSensor::default();
 
-        let average = sensor.get_average_temperature();
+        let avg = sensor.get_average_temperature();
 
-        assert!(average.is_none());
+        assert!(avg.is_none());
+    }
+
+    #[test]
+    fn returns_average_temperature_with_one_reading() {
+        let sensor = TemperatureSensor::with_temps(&[10.0]);
+
+        let avg = sensor.get_average_temperature();
+
+        assert_eq!(avg, Some(10.0));
+    }
+
+    #[test]
+    fn returns_average_temperature_with_two_readings() {
+        let sensor = TemperatureSensor::with_temps(&[10.0, 20.0]);
+
+        let avg = sensor.get_average_temperature();
+
+        assert_eq!(avg, Some(15.0));
     }
 
     #[test]
@@ -120,11 +122,11 @@ mod tests {
     }
 
     #[test]
-    fn max_temp_returns_max_when_more_than_one_reading_is_present() {
-        let sensor = TemperatureSensor::with_temps(&[35.0, 30.0, 40.0, 38.0]);
+    fn returns_max_temperature_with_two_readings() {
+        let sensor = TemperatureSensor::with_temps(&[20.0, 10.0]);
 
         let max = sensor.get_max_temperature();
 
-        assert_eq!(max, Some(40.0));
+        assert_eq!(max, Some(20.0));
     }
 }
