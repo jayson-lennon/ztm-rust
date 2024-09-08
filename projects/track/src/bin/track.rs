@@ -1,4 +1,9 @@
+<<<<<<< Updated upstream
 use std::path::PathBuf;
+=======
+use error_stack::{Result, ResultExt};
+use track::{error::AppError, feature::cli, init};
+>>>>>>> Stashed changes
 
 use chrono::Utc;
 use clap::{Parser, Subcommand};
@@ -106,6 +111,10 @@ fn main() -> Result<(), AppError> {
             println!("{duration}");
         }
     }
+
+    cli::run()
+        .change_context(AppError)
+        .attach_printable("failed to run CLI")?;
 
     Ok(())
 }

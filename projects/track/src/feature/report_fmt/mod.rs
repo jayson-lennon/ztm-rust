@@ -1,11 +1,20 @@
+<<<<<<< Updated upstream
 //! Statistics reporting
 
 use std::time::Duration;
 
+=======
+use std::time::Duration;
+
+#[derive(Debug, Default)]
+pub struct HMSFormatter;
+
+>>>>>>> Stashed changes
 pub trait DurationFormat {
     fn format(&self, duration: Duration) -> String;
 }
 
+<<<<<<< Updated upstream
 #[derive(Debug, Clone)]
 pub struct HourMinSecFormatter;
 
@@ -15,24 +24,47 @@ impl DurationFormat for HourMinSecFormatter {
         let total_seconds = duration.as_secs();
 
         // Calculate hours, minutes, and seconds
+=======
+impl DurationFormat for HMSFormatter {
+    fn format(&self, duration: Duration) -> String {
+        let total_seconds = duration.as_secs();
+
+>>>>>>> Stashed changes
         let hours = total_seconds / 3600;
         let minutes = (total_seconds % 3600) / 60;
         let seconds = total_seconds % 60;
 
+<<<<<<< Updated upstream
         // Format into HH:MM:SS
+=======
+>>>>>>> Stashed changes
         format!("{hours:02}:{minutes:02}:{seconds:02}")
     }
 }
 
 #[cfg(test)]
 mod tests {
+<<<<<<< Updated upstream
+=======
+    use std::time::Duration;
+
+>>>>>>> Stashed changes
     use super::*;
 
     #[test]
     fn formats_seconds() {
         let duration = Duration::from_secs(5);
+<<<<<<< Updated upstream
         let formatted = HourMinSecFormatter.format(duration);
 
         assert_eq!(&formatted, "00:00:05");
+=======
+
+        let formatter = HMSFormatter::default();
+
+        let text = formatter.format(duration);
+
+        assert_eq!(&text, "00:00:05");
+>>>>>>> Stashed changes
     }
 }
