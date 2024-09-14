@@ -21,7 +21,9 @@ pub struct CliError;
 pub enum Command {
     /// Start tracking time
     Start,
+    /// Stop tracking time
     Stop,
+    /// Generate report
     Report,
 }
 
