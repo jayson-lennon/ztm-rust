@@ -6,3 +6,4 @@
 //   * Print out the generated hashmap using the `dbg!` macro to ensure it works.
 
 fn main() {}
+

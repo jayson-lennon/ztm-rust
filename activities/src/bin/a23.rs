@@ -73,3 +73,4 @@ mod test {
         assert_eq!(part_3(), Access::Guest, "Alice is a guest");
     }
 }
+

@@ -14,3 +14,4 @@
 // * Use a HashMap for the furniture store stock
 
 fn main() {}
+

@@ -19,3 +19,4 @@
 // * Only the Iterator trait needs to be implemented for this activity
 
 fn main() {}
+

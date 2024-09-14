@@ -5,7 +5,7 @@
 //   using human-readable terms.
 //
 // Requirements:
-// * Implement the remaining macro_rules using the formats shown in the main function.
+// * Implement the remaining macro_rules matchers using the formats shown in the main function.
 // * The type returned by the macro must match the annotations in the main function.
 //
 // Notes:
