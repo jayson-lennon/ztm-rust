@@ -1,3 +1,7 @@
+#![allow(dead_code)]
+#![allow(unused_variables)]
+#![allow(clippy::redundant_guards)]
+
 mod ex1 {
     enum Status {
         Error(i32),

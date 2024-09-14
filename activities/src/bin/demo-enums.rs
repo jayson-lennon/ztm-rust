@@ -1,3 +1,5 @@
+#![allow(dead_code)]
+
 enum Direction {
     Left,
     Right,

@@ -1,3 +1,6 @@
+#![allow(dead_code)]
+#![allow(clippy::comparison_chain)]
+
 fn main() {}
 
 fn add(lhs: i32, rhs: i32) -> i32 {

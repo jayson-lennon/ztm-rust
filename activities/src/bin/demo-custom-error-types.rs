@@ -1,3 +1,5 @@
+#![allow(dead_code)]
+
 use chrono::{DateTime, Duration, Utc};
 use thiserror::Error;
 
@@ -29,13 +31,11 @@ fn swipe_card() -> Result<SubwayPass, PassError> {
 fn use_pass(pass: &mut SubwayPass, cost: isize) -> Result<(), PassError> {
     if Utc::now() > pass.expires {
         Err(PassError::PassExpired)
+    } else if pass.funds - cost < 0 {
+        Err(PassError::InsufficientFunds(pass.funds))
     } else {
-        if pass.funds - cost < 0 {
-            Err(PassError::InsufficientFunds(pass.funds))
-        } else {
-            pass.funds = pass.funds - cost;
-            Ok(())
-        }
+        pass.funds -= -cost;
+        Ok(())
     }
 }
 
@@ -44,9 +44,9 @@ fn main() {
     match can_board {
         Ok(_) => println!("ok to board"),
         Err(e) => match e {
-            PassError::ReadError(e) => (),
+            PassError::ReadError(_) => (),
             PassError::PassExpired => (),
-            PassError::InsufficientFunds(f) => (),
+            PassError::InsufficientFunds(_) => (),
         },
     };
 }

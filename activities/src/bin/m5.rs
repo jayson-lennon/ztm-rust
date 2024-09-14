@@ -14,6 +14,8 @@
 // * Tuples can be used to specify both the input and expected output
 // * The macro can be invoked multiple times; repetitions are optional
 
+#![allow(dead_code)]
+
 #[derive(Debug, PartialEq)]
 enum Size {
     Small,

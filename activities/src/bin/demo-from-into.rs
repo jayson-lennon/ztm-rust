@@ -1,3 +1,6 @@
+#![allow(dead_code)]
+#![allow(unused_variables)]
+
 mod ex1 {
 
     struct Uppercase(String);

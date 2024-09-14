@@ -1,3 +1,5 @@
+#![allow(dead_code)]
+
 mod greet {
     pub fn hello() {
         println!("hello");

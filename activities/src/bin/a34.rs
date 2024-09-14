@@ -17,7 +17,9 @@
 // Notes:
 // * Optionally use generics for each state
 
-mod NoGenerics {
+#![allow(dead_code)]
+
+mod no_generics {
     #[derive(Copy, Clone)]
     struct LuggageId(usize);
     struct Luggage(LuggageId);
@@ -69,7 +71,7 @@ mod NoGenerics {
     }
 }
 
-mod Generics {
+mod generics {
 
     #[derive(Copy, Clone)]
 

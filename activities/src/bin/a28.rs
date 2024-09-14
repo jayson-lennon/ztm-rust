@@ -10,6 +10,8 @@
 // * Create a function for each type of clothes (shoes, shirt, pants)
 //   that accepts the new type specific to that type of clothing
 
+#![allow(dead_code)]
+
 #[derive(Debug)]
 enum Color {
     Black,

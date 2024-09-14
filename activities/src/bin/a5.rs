@@ -16,6 +16,6 @@ fn main() {
         if n == 4 {
             break;
         }
-        n = n + 1;
+        n += 1;
     }
 }

@@ -1,3 +1,6 @@
+#![allow(dead_code)]
+#![allow(clippy::match_like_matches_macro)]
+
 enum Access {
     Admin,
     Manager,

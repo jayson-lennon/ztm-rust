@@ -9,6 +9,8 @@
 // * Use a function to print out the drink flavor and ounces
 // * Use a match expression to print the drink flavor
 
+#![allow(dead_code)]
+
 enum Flavor {
     Sparkling,
     Sweet,

@@ -1,3 +1,6 @@
+#![allow(dead_code)]
+#![allow(unused_must_use)]
+
 use crossbeam_channel::unbounded;
 use std::thread;
 
@@ -23,7 +26,6 @@ fn main() {
                 WorkerMsg::Sum(lhs, rhs) => {
                     println!("Worker: summing...");
                     main_tx.send(MainMsg::SumResult(lhs + rhs));
-                    ()
                 }
                 WorkerMsg::Quit => {
                     println!("Worker: terminating...");
@@ -31,7 +33,7 @@ fn main() {
                     break;
                 }
             },
-            Err(e) => {
+            Err(_) => {
                 println!("Worker: disconnected");
                 main_tx.try_send(MainMsg::WorkerQuit);
                 break;

@@ -16,8 +16,6 @@
 // * After moving the functions into modules, try running
 //   `cargo check --bin a26c` to get a listing of required code changes
 
-use mylib;
-
 fn main() {
     use mylib::math;
     // Part 1: math functions

@@ -1,3 +1,6 @@
+#![allow(dead_code)]
+#![allow(unused_must_use)]
+
 mod ex1 {
     use std::thread;
 
@@ -46,7 +49,7 @@ mod ex3 {
     use std::thread;
 
     pub fn run() {
-        let data = vec!['a', 'b', 'c'];
+        let data = ['a', 'b', 'c'];
         let capitalized = thread::spawn(move || {
             let data: Vec<char> = data.iter().map(|c| c.to_ascii_uppercase()).collect();
             data

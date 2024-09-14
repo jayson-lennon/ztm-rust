@@ -8,6 +8,8 @@
 // * Run `cargo test --bin a23` to check your program.
 // * Only edit the part_1, part_2, and part_3 functions.
 
+#![allow(dead_code)]
+
 fn part_1() -> bool {
     // We are checking whether or not this particular user
     // has an access level. The "admin" user does have
@@ -20,13 +22,13 @@ fn part_2() -> Option<Access> {
     // "Root" is equivalent to Access::Admin, but it is
     // not listed in the maybe_access function.
     // Note: Use or_else and root().
-    maybe_access("root").or_else(|| root())
+    maybe_access("root").or_else(root)
 }
 
 fn part_3() -> Access {
     // "Alice" is not a listed user, so she will be a guest.
     // Note: Use unwrap_or_else.
-    maybe_access("Alice").unwrap_or_else(|| Access::Guest)
+    maybe_access("Alice").unwrap_or(Access::Guest)
 }
 
 #[derive(Debug, Eq, PartialEq)]
@@ -56,7 +58,7 @@ mod test {
 
     #[test]
     fn check_part_1() {
-        assert_eq!(part_1(), true, "Admins have an access level");
+        assert!(part_1(), "Admins have an access level");
     }
 
     #[test]

@@ -1,3 +1,5 @@
+#![allow(dead_code)]
+
 /// A favorite color.
 enum Color {
     Red,

@@ -57,11 +57,8 @@ impl Material for Wood {
     }
 }
 
-fn total_cost(materials: &Vec<Box<dyn Material>>) -> f64 {
-    materials
-        .iter()
-        .map(|material| material.total_cost())
-        .sum()
+fn total_cost(materials: &[Box<dyn Material>]) -> f64 {
+    materials.iter().map(|material| material.total_cost()).sum()
 }
 
 fn main() {

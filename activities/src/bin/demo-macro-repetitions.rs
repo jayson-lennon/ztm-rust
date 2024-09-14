@@ -1,3 +1,7 @@
+#![allow(dead_code)]
+#![allow(unused_variables)]
+#![allow(clippy::vec_init_then_push)]
+
 macro_rules! myvec {
     (
         $($element:expr),+

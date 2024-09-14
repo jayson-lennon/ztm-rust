@@ -30,6 +30,8 @@
 //     - add `#[derive(Serialize, Deserialize)]` to the message queue
 //     - use the `serde_json` crate to perform the serialize and deserialize operation
 
+#![allow(dead_code)]
+
 use std::collections::VecDeque;
 use std::num::ParseIntError;
 use std::path::PathBuf;

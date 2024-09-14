@@ -21,6 +21,8 @@
 // * Test your program by changing the vehicle status from both a storefront
 //   and from corporate
 
+#![allow(dead_code)]
+
 use std::cell::RefCell;
 use std::rc::Rc;
 
@@ -104,8 +106,8 @@ mod test {
         }
 
         // Storefront status indicates available.
-        let mut rentals = storefront.rentals.borrow();
-        if let Some(car) = rentals.get(0) {
+        let rentals = storefront.rentals.borrow();
+        if let Some(car) = rentals.first() {
             assert_eq!(car.status, Status::Available);
         }
     }

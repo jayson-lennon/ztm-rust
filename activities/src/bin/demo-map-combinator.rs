@@ -1,3 +1,6 @@
+#![allow(unused_variables)]
+#![allow(clippy::manual_map)]
+
 fn maybe_num() -> Option<i32> {
     Some(1)
 }

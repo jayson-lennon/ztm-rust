@@ -25,7 +25,7 @@ fn main() {
     let mut total_stock = 0;
 
     for (item, qty) in stock.iter() {
-        total_stock = total_stock + qty;
+        total_stock += qty;
         let stock_count = if qty == &0 {
             "out of stock".to_owned()
         } else {

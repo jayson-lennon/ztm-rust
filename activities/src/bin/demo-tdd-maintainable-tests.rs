@@ -1,3 +1,5 @@
+#![allow(dead_code)]
+
 fn main() {}
 
 #[derive(Clone, Copy, Debug, PartialEq)]

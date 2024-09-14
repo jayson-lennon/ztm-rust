@@ -1,3 +1,6 @@
+#![allow(dead_code)]
+#![allow(unused_variables)]
+
 struct Employee<State> {
     name: String,
     state: State,
@@ -17,7 +20,7 @@ impl<State> Employee<State> {
     fn transition<NextState>(self, state: NextState) -> Employee<NextState> {
         Employee {
             name: self.name,
-            state: state,
+            state,
         }
     }
 }

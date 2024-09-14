@@ -21,6 +21,8 @@
 //   by telling the thread to self-terminate
 // * Use `cargo test --bin a39` to test your program to ensure all cases are covered
 
+#![allow(dead_code)]
+
 use colored::*;
 use crossbeam_channel::{unbounded, Receiver};
 use std::thread::{self, JoinHandle};
@@ -75,6 +77,8 @@ fn spawn_light_thread(receiver: Receiver<LightMsg>) -> JoinHandle<LightStatus> {
 }
 
 fn main() {
+    #![allow(unused_must_use)]
+
     let (s, r) = unbounded();
 
     let light = spawn_light_thread(r);
@@ -86,7 +90,7 @@ fn main() {
     s.send(LightMsg::Off);
     s.send(LightMsg::Disconnect);
 
-    let light_status = light.join();
+    let _ = light.join();
 }
 
 #[cfg(test)]

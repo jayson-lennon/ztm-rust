@@ -53,3 +53,4 @@ fn main() {
     print_perimeter(square);
     print_perimeter(triangle);
 }
+

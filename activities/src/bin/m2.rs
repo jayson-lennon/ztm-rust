@@ -19,6 +19,8 @@
 // * Run `cargo check --bin m2` to check your work. A successful check means
 //   the activity is complete.
 
+#![allow(dead_code)]
+
 use std::ops::Deref;
 
 #[derive(Debug)]

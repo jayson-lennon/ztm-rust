@@ -1,3 +1,5 @@
+#![allow(unused_variables)]
+
 fn main() {
     let range = 1..=3;
     let range = 1..4;

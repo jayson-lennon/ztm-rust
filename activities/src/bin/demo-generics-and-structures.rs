@@ -1,3 +1,5 @@
+#![allow(dead_code)]
+
 struct Dimensions {
     width: f64,
     height: f64,

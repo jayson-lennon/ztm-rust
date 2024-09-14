@@ -8,6 +8,8 @@
 // * Use the map function to create the User
 // * Print out the User struct if found, or a "not found" message if not
 
+#![allow(dead_code)]
+
 #[derive(Debug)]
 struct User {
     user_id: i32,

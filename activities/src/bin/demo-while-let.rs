@@ -1,3 +1,6 @@
+#![allow(unused_variables)]
+#![allow(clippy::while_let_on_iterator)]
+
 fn main() {
     let mut data = Some(3);
 
@@ -6,7 +9,7 @@ fn main() {
         data = None;
     }
 
-    let numbers = vec![1, 2, 3];
+    let numbers = [1, 2, 3];
     let mut number_iter = numbers.iter();
     while let Some(num) = number_iter.next() {
         println!("num = {num:?}");

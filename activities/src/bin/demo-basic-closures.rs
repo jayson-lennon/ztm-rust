@@ -1,3 +1,6 @@
+#![allow(dead_code)]
+#![allow(unused_variables)]
+
 fn add_fn(a: i32, b: i32) -> i32 {
     a + b
 }

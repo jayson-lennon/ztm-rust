@@ -1,3 +1,6 @@
+#![allow(dead_code)]
+#![allow(unused_must_use)]
+
 use crossbeam_channel::unbounded;
 use std::thread;
 
@@ -20,7 +23,7 @@ fn main() {
                     break;
                 }
             },
-            Err(e) => {
+            Err(_) => {
                 println!("disconnected");
                 break;
             }

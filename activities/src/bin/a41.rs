@@ -75,7 +75,7 @@ fn spawn_worker(counter: Arc<Mutex<usize>>) -> Worker<Message> {
             // no more are available.
             loop {
                 // Get the next job.
-                for job in jobs.pop_front() {
+                if let Some(job) = jobs.pop_front() {
                     match job {
                         Job::Print(msg) => println!("{}", msg),
                         Job::Sum(lhs, rhs) => println!("{}+{}={}", lhs, rhs, lhs + rhs),

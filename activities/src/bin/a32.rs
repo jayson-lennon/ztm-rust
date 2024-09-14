@@ -10,7 +10,7 @@
 // * The mock data has already been loaded with the include_str! macro, so all functionality
 //   must be implemented using references/borrows
 
-const MOCK_DATA: &'static str = include_str!("mock-data.csv");
+const MOCK_DATA: &str = include_str!("mock-data.csv");
 
 struct Names<'a> {
     inner: Vec<&'a str>,

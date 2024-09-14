@@ -21,6 +21,8 @@
 // * Use a single match expression utilizing guards to implement the program
 // * Run the program and print the messages with at least 4 different tiles
 
+#![allow(dead_code)]
+
 #[derive(Debug)]
 enum TreasureItem {
     Gold,

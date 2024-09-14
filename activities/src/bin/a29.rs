@@ -45,3 +45,4 @@ fn main() {
     print_guest_priority(guest);
     print_guest_priority(vip);
 }
+

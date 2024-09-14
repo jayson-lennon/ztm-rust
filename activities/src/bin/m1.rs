@@ -13,6 +13,10 @@
 //   the `get_data` function.
 // * Use `cargo test --bin m1` to check your work.
 
+#![allow(dead_code)]
+#![allow(clippy::match_like_matches_macro)]
+#![allow(clippy::manual_range_patterns)]
+
 use std::error::Error;
 use std::fmt;
 

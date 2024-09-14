@@ -51,3 +51,4 @@ fn main() {
     println!("{:?}", multiplier.next());
     println!("{:?}", multiplier.next());
 }
+

@@ -29,6 +29,10 @@
 // * A vector is the easiest way to store the bills at stage 1, but a
 //   hashmap will be easier to work with at stages 2 and 3.
 
+#![allow(dead_code)]
+#![allow(clippy::enum_variant_names)]
+#![allow(clippy::println_empty_string)]
+
 use std::collections::HashMap;
 use std::io;
 
@@ -97,7 +101,7 @@ fn get_input() -> Option<String> {
         println!("Please enter your data again");
     }
     let input = buffer.trim().to_owned();
-    if &input == "" {
+    if input.is_empty() {
         None
     } else {
         Some(input)
@@ -113,7 +117,7 @@ fn get_bill_amount() -> Option<f64> {
             Some(input) => input,
             None => return None,
         };
-        if &input == "" {
+        if input.is_empty() {
             return None;
         }
         let parsed_input: Result<f64, _> = input.parse();

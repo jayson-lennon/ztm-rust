@@ -15,6 +15,8 @@
 // * It is not necessary to have data fields or function implementations
 //   for the vehicle bodies/colors
 
+#![allow(dead_code)]
+
 trait Body {}
 trait Color {}
 

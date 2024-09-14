@@ -10,6 +10,8 @@
 //   * Check the documentation comments for the functions to
 //     determine how the they should operate.
 
+#![allow(dead_code)]
+
 /// Ensures n is >= lower and <= upper.
 fn clamp(n: i32, lower: i32, upper: i32) -> i32 {
     if n < lower {

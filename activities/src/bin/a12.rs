@@ -10,6 +10,8 @@
 // * Implement functionality on the box struct to create a new box
 // * Implement functionality on the box struct to print the characteristics
 
+#![allow(dead_code)]
+
 enum Color {
     Brown,
     Red,

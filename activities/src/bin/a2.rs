@@ -20,3 +20,4 @@ fn main() {
     let result = sum(2, 2);
     display_result(result);
 }
+

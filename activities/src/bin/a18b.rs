@@ -26,6 +26,8 @@
 // * Only the `authorize` function should be changed. Everything else can remain
 //   unmodified.
 
+#![allow(dead_code)]
+
 #[derive(Clone, Copy, Debug)]
 enum ProtectedLocation {
     All,

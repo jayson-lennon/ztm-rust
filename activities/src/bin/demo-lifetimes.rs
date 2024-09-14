@@ -1,3 +1,5 @@
+#![allow(dead_code)]
+
 #[derive(Debug)]
 struct Cards {
     inner: Vec<IdCard>,
@@ -39,7 +41,7 @@ impl<'a> YoungPeople<'a> {
                 .inner
                 .iter()
                 .filter(|id| id.city == City::Fooville)
-                .map(|id| *id)
+                .copied()
                 .collect(),
         }
     }

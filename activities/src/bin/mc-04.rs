@@ -21,6 +21,8 @@
 // - The `.max()` method on iterators won't work for f64. Consider writing a `for` loop and
 //   manually track the highest temperature, or use `.fold`
 
+#![allow(dead_code)]
+
 fn main() {}
 
 #[derive(Debug, Default)]

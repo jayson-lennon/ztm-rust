@@ -24,3 +24,4 @@ fn main() {
     let is_gt_100 = value > 100;
     print_message(is_gt_100);
 }
+

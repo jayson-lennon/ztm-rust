@@ -1,4 +1,7 @@
-#[allow(unused_macros)]
+#![allow(clippy::useless_vec)]
+#![allow(unused_macros)]
+#![allow(unused_variables)]
+
 macro_rules! iterslice {
     // iterable[start:end-1]
     // iterable[1:3] -> items at index 1 and 2
