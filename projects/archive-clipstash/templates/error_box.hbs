@@ -1,0 +1,14 @@
+{{#if _errors}}
+<article class="message is-danger">
+    <div class="message-header">{{header}}</div>
+    <div class="message-body">
+        <ul>
+            {{#each _errors}}
+            <li>
+                &bull; {{this}}
+            </li>
+            {{/each}}
+        </ul>
+    </div>
+</article>
+{{/if}}

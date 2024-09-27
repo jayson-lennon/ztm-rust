@@ -1,0 +1,78 @@
+{{#* inline "title"}}{{_title}}{{/inline}}
+{{#* inline "head"}}
+<script type="text/javascript" src="/static/tiny-date-picker.min.js"></script>
+<link rel="stylesheet" href="/static/tiny-date-picker.min.css">
+{{/inline}}
+
+{{#* inline "page"}}
+
+<section class="section">
+  <div class="container">
+    <form class="box">
+      <div class="columns is-centered">
+        <div class="column flex is-two-thirds">
+          <label for="content" class="label">{{clip.title}}</label>
+          <textarea id="clip-content" readonly class="textarea fill-height" placeholder=""
+            name="content">{{clip.content}}</textarea>
+        </div>
+        <div class="column is-one-third">
+          <div class="field">
+            <label for="expires" class="label">Expires</label>
+            <div class="control has-icons-left">
+              <input class="input" type="text" placeholder="Expires" name="expires" value="{{clip.expires}}" readonly>
+              <span class="icon is-left"><i class="fas fa-clock"></i></span>
+            </div>
+          </div>
+          <div class="field">
+            <div class="level">
+              <div class="level-item has-text-centered">
+                <div class="is-centered">
+                  <a href="/clip/raw/{{clip.shortcode}}" class="is-link has-text-weight-bold">View Raw</a>
+                </div>
+              </div>
+              <div class="level-item has-text-centered">
+                <div class="is-centered">
+                  <a class="copy-link is-link has-text-weight-bold">
+                    <span class="icon is-left"><i class="fas fa-clipboard"></i></span>
+                    Copy Link</a>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="field">
+            <div class="level">
+              <div class="level-item has-text-centered">
+                <div class="is-centered">
+                  {{clip.hits}} hits
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+</section>
+
+
+<script>
+  window.onload = function () {
+    var clipContentEl = document.getElementById('clip-content');
+    clipContentEl.onclick = function () {
+      clipContentEl.select();
+    }
+    new ClipboardJS('.copy-link', {
+      text: function (trigger) {
+        return window.location.href;
+      }
+    });
+    tippy('.copy-link', {
+      content: 'Copied!',
+      trigger: 'click',
+      duration: [0, 1500],
+    });
+  }
+</script>
+
+{{/inline}}
+{{> (lookup this "_base")}}

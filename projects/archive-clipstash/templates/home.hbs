@@ -1,0 +1,84 @@
+{{#* inline "title"}}{{_title}}{{/inline}}
+{{#* inline "head"}}
+<script type="text/javascript" src="/static/tiny-date-picker.min.js"></script>
+<link rel="stylesheet" href="/static/tiny-date-picker.min.css">
+{{/inline}}
+
+{{#* inline "page"}}
+
+<section class="section">
+  <div class="container">
+    <form class="box" method="post" action="/">
+      {{> error_box _errors=_errors header="Error Posting Clip"}}
+      <div class="columns is-centered">
+        <div class="column flex is-two-thirds">
+          <article class="message is-info">
+            <div class="message-header">
+              <p>Clip</p>
+            </div>
+            <div class="message-body">
+              <textarea class="textarea fill-height" placeholder="Paste your content here"
+                name="content">{{clip.values.content.0}}</textarea>
+            </div>
+          </article>
+
+        </div>
+        <div class="column is-one-third">
+          <article class="message is-info">
+            <div class="message-header">
+              <p>Optional Goodies</p>
+            </div>
+            <div class="message-body">
+              <div class="field">
+                <label for="title" class="label">Title</label>
+                <div class="control has-icons-left">
+                  <input class="input" type="text" placeholder="Title" name="title" value="{{clip.values.title.0}}">
+                  <span class="icon is-left"><i class="fas fa-heading"></i></span>
+                </div>
+              </div>
+              <div class="field">
+                <label for="expires" class="label">Expires</label>
+                <div class="control has-icons-left">
+                  <input class="input input-expires" type="text" placeholder="Expires" name="expires"
+                    value="{{clip.values.expires.0}}">
+                  <span class="icon is-left"><i class="fas fa-clock"></i></span>
+                </div>
+              </div>
+              <div class="field">
+                <label for="password" class="label">Password Protected</label>
+                <div class="control has-icons-left">
+                  <input class="input" type="text" placeholder="Password" name="password">
+                  <span class="icon is-left"><i class="fas fa-lock"></i></span>
+                </div>
+              </div>
+
+            </div>
+          </article>
+          <div class="field">
+            <div class="level">
+              <div class="level-item has-text-centered">
+                <div class="control is-centered">
+                  <input type="submit" class="button is-link has-text-weight-bold" value="Stash it!">
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+</section>
+
+
+<script>
+  window.onload = function () {
+    TinyDatePicker('.input-expires', {
+      format(date) {
+        return date.toISOString().split('T')[0];
+      }
+    });
+  }
+</script>
+
+{{/inline}}
+{{> (lookup this "_base")}}
