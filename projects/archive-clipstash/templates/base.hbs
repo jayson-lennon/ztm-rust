@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+
+<head>
+  <title>ClipStash - {{#> title }}Stash Your Clipboard!{{/title}}</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta charset="UTF-8">
+  <meta name="description" content="Rust Project: ClipStash">
+  <link rel="stylesheet" href="/static/clipstash.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.8/dist/clipboard.min.js"></script>
+  <script src="https://kit.fontawesome.com/edf3c6579f.js" crossorigin="anonymous"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@400&family=Fira+Code:wght@400&display=swap"
+    rel="stylesheet">
+  {{> head}}
+</head>
+
+<body>
+  {{> header}}
+  <section class="page-content">
+    {{> page}}
+  </section>
+  {{> footer}}
+
+  <script src="https://unpkg.com/@popperjs/core@2"></script>
+  <script src="https://unpkg.com/tippy.js@6"></script>
+</body>
+
+</html>
