@@ -11,6 +11,14 @@
 // * Use a function to print the messages
 // * Use a match expression to determine which message
 //   to print
+fn print_mess(var: i32) {
+    let is_big: bool = var > 100;
+    match is_big {
+        True => println!("Its big"),
+        _ => println!("Its small"),
+    }
+}
 
-fn main() {}
-
+fn main() {
+    print_mess(343);
+}

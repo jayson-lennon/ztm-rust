@@ -12,6 +12,11 @@
 //   to uppercase and lowercase
 //   * Try searching for: to_uppercase, to_lowercase
 
-fn main() {}
-
-
+/// Function to display string in upper and lower case
+fn upper_lower(string: &str) {
+    println!("Upper: {}", string.to_uppercase());
+    println!("Lower: {}", string.to_lowercase());
+}
+fn main() {
+    upper_lower("Witcher 3");
+}

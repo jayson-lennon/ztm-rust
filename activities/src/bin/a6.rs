@@ -10,6 +10,12 @@
 // * Print the variable within the while loop
 // * Do not use break to exit the loop
 
-fn main() {}
+fn main() {
+    let mut var: i32 = 5;
 
-
+    while var > 0 {
+        println!("{var}");
+        var = var - 1;
+    }
+    println!("done")
+}

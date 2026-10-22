@@ -9,6 +9,17 @@
 // * Destructure the return value into two variables
 // * Use an if..else if..else block to determine what to print
 
-fn main() {}
+fn return_tuple() -> (i32, i32) {
+    return (2, 6);
+}
 
-
+fn main() {
+    let (x, y) = return_tuple();
+    if y > 5 {
+        println!("Grater");
+    } else if y == 5 {
+        println!("Equal")
+    } else {
+        println!("Less")
+    }
+}

@@ -11,6 +11,26 @@
 // * Create one of each ticket and place into a vector
 // * Use a match expression while iterating the vector to print the ticket info
 
-fn main() {}
+enum Tickets {
+    Backstage(String, f64),
+    Vip(String, f64),
+    Standard(f64),
+}
 
+fn main() {
+    let vec: Vec<Tickets> = vec![
+        Tickets::Backstage(String::from("Jan"), 32.9),
+        Tickets::Vip(String::from("Adam"), 44.3),
+        Tickets::Standard(13.3),
+    ];
 
+    for ticket in vec {
+        match ticket {
+            Tickets::Backstage(name, price) => {
+                println!("Backstage ticket for {name} costs {price}")
+            }
+            Tickets::Standard(price) => println!("Standard ticket costs {price}"),
+            Tickets::Vip(name, price) => println!("VIP ticket for {name} costs {price}"),
+        }
+    }
+}
